@@ -2,9 +2,11 @@
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import './index.css';
+//import nodemailer from 'nodemailer';
+
 function Home() {
- 
   return (
     <div className="App">
       <Container fluid="md" className="justify-content-md-center container">
@@ -20,32 +22,41 @@ function Home() {
       <Form.Control type="text" id="input2" aria-describedby="Doc"/>
       <Form.Label htmlFor="Email">Email</Form.Label>
       <Form.Control type="email" id="input3" aria-describedby="Email"/>
+      <br></br>
     <h4>Serviços</h4>
     <hr></hr>
-      <Form.Check type="checkbox" label="CARGA" id="1" />
-      <Form.Check type="checkbox" label="DESCARGA" id="2" />
-      <Form.Check type="checkbox" label="AJUDANTES" id="3" />
-      <Form.Check type="checkbox" label="MATERIAL PARA EMBALAGEM" id="4" />
-      <Form.Check type="checkbox" label="EMBALAGEM DE LOUÇAS" id="5" />
-      <Form.Check type="checkbox" label="EMBALAGEM DE MOVEIS" id="6" />
-      <Form.Check type="checkbox" label="DESMONTAGEM DE MOVEIS" id="7" />
-      <Form.Check type="checkbox" label="MONTAGEM DE MOVEIS" id="8" />
-      <Form.Check type="checkbox" label="SERVIÇO DE PERSONAL ORGANIZER" id="9" />
+      <Form.Check type="checkbox" className="checkbox" label="CARGA" id="1" />
+      <Form.Check type="checkbox" className="checkbox" label="DESCARGA" id="2" />
+      <Form.Check type="checkbox" className="checkbox" label="AJUDANTES" id="3" />
+      <Form.Check type="checkbox" className="checkbox" label="MATERIAL PARA EMBALAGEM" id="4" />
+      <Form.Check type="checkbox" className="checkbox" label="EMBALAGEM DE LOUÇAS" id="5" />
+      <Form.Check type="checkbox" className="checkbox" label="EMBALAGEM DE MOVEIS" id="6" />
+      <Form.Check type="checkbox"  className="checkbox" label="DESMONTAGEM DE MOVEIS" id="7" />
+      <Form.Check type="checkbox" className="checkbox" label="MONTAGEM DE MOVEIS" id="8" />
+      <Form.Check type="checkbox" className="checkbox" label="SERVIÇO DE PERSONAL ORGANIZER" id="9" />
+      <br></br>
     <h4>Localização</h4>
     <hr></hr>
       <Form.Label htmlFor="origem">Origem</Form.Label>
       <Form.Control type="text" id="input4" aria-describedby="origem"/>
       <Form.Label htmlFor="destino">Destino</Form.Label>
       <Form.Control type="text" id="input5" aria-describedby="destino"/>
+      <br></br>
     <h4>Valor do Serviço</h4>
     <hr></hr>
       <Form.Label htmlFor="total">Valor</Form.Label>
       <Form.Control type="text" id="input6" aria-describedby="total"/>
-
+<br></br>
+      <div className="d-grid gap-2">
+      <Button variant="primary" size="md">
+        Enviar Email
+      </Button>
+      </div>
 
       </Form>
       </Card.Body>
     </Card>
+    <br></br>
     </Container>
         
     
