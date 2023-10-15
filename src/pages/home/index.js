@@ -4,9 +4,17 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './index.css';
+import Api from "../../Api";
 //import nodemailer from 'nodemailer';
 
 function Home() {
+
+  async function EnviarEmail() {
+   const resposta = await Api.post("/send-mail");
+   console.log(resposta);
+  }
+
+
   return (
     <div className="App">
       <Container fluid="md" className="justify-content-md-center container">
@@ -48,7 +56,7 @@ function Home() {
       <Form.Control type="text" id="input6" aria-describedby="total"/>
 <br></br>
       <div className="d-grid gap-2">
-      <Button variant="primary" size="md">
+      <Button variant="primary" size="md" onClick={EnviarEmail}>
         Enviar Email
       </Button>
       </div>
