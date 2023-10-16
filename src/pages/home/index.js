@@ -1,16 +1,24 @@
 //import { useState, useEffect } from "react";
+import { useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 import './index.css';
 import Api from "../../Api";
 //import nodemailer from 'nodemailer';
 
 function Home() {
+  const [loading, setLoading] = useState(false);
+  const [textoBotao, setTextoBotao] = useState("Enviar E-mail");
 
   async function EnviarEmail() {
+    setLoading(true);
+    setTextoBotao("Enviando E-mail")
    const resposta = await Api.post("/send-mail");
+   setTextoBotao("Enviar E-mail")
+   setLoading(false);
    console.log(resposta);
   }
 
@@ -57,8 +65,19 @@ function Home() {
 <br></br>
       <div className="d-grid gap-2">
       <Button variant="primary" size="md" onClick={EnviarEmail}>
-        Enviar Email
+        {loading && <Spinner
+          as="span"
+          animation="border"
+          size="sm"
+          role="status"
+          aria-hidden="true"
+        />}
+        {textoBotao}
       </Button>
+
+      
+
+
       </div>
 
       </Form>
