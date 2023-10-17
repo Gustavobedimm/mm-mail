@@ -30,22 +30,23 @@ function Home() {
   const [nome, setNome] = useState("Gustavo Bedim");
   const [cpf, setCpf] = useState("089.168.219-83");
   const [email, setEmail] = useState("gustavo_bmazutti@hotmail.com");
+  const [emailCc, setEmailCc] = useState("gustavo_bmazutti@hotmail.com");
   const [origem, setOrigem] = useState("Cascavel-PR");
   const [destino, setDestino] = useState("Cascavel-PR");
   const [valor, setValor] = useState("9.000,00");
-  const [check1, setCheck1] = useState(false);
-  const [check2, setCheck2] = useState(false);
-  const [check3, setCheck3] = useState(false);
-  const [check4, setCheck4] = useState(false);
-  const [check5, setCheck5] = useState(false);
-  const [check6, setCheck6] = useState(false);
-  const [check7, setCheck7] = useState(false);
-  const [check8, setCheck8] = useState(false);
-  const [check9, setCheck9] = useState(false);
-  const [check10, setCheck10] = useState(false);
 
   async function EnviarEmail() {
     setLoading(true);
+    let checkbox0 = document.getElementById("checkbox0");
+    let checkbox1 = document.getElementById("checkbox1");
+    let checkbox2 = document.getElementById("checkbox2");
+    let checkbox3 = document.getElementById("checkbox3");
+    let checkbox4 = document.getElementById("checkbox4");
+    let checkbox5 = document.getElementById("checkbox5");
+    let checkbox6 = document.getElementById("checkbox6");
+    let checkbox7 = document.getElementById("checkbox7");
+    let checkbox8 = document.getElementById("checkbox8");
+    let checkbox9 = document.getElementById("checkbox9");
 
     const data = {
       nome: nome,
@@ -91,29 +92,12 @@ function Home() {
     setTextoBotao("Enviar");
     setLoading(false);
   }
-  function mudaStatus1(){
-    let checkbox = document.getElementById("checkbox1");
-    if(checkbox.checked){
-      alert("checkboxmarcado")
-    }else{alert(checkbox);}
-    
-    
-  }
-  function mudaStatus2(){
-    if(check2 === false){
-      setCheck2(true);
-    }else{
-      setCheck2(false);
-    }
-  }
-  function mudaStatus3(){
-    if(check3 === false){
-      setCheck3(true);
-    }else{
-      setCheck3(false);
-    }
-  }
-
+  //function mudaStatus1(){
+  //  
+  //  if(checkbox.checked){
+  //    alert("checkboxmarcado")
+  //  }else{alert(checkbox);}
+  //}
   return (
     <div className="App">
       <Box sx={{ flexGrow: 1 }}>
@@ -168,36 +152,47 @@ function Home() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Box>
+            <br></br>
+            <Box sx={{ width: 1500, maxWidth: "100%" }}>
+              <TextField
+                fullWidth
+                label="Copia para"
+                id="CC"
+                value={emailCc}
+                onChange={(e) => setEmailCc(e.target.value)}
+              />
+            </Box>
 
             <br></br>
             <Divider textAlign="left">Serviços</Divider>
             <br></br>
             <FormGroup>
-              <FormControlLabel  control={<Checkbox id="checkbox1"/>} label="CARGA" />
-              <FormControlLabel control={<Checkbox/>} label="DESCARGA" checked={check2}/>
-              <FormControlLabel control={<Checkbox onClick={()=>{mudaStatus1()}}/>} label="AJUDANTES" checked={check3}/>
+            <FormControlLabel  control={<Checkbox id="checkbox0"/>} label="SOMENTE TRANSPORTE"/>
+              <FormControlLabel  control={<Checkbox id="checkbox1"/>} label="CARGA"/>
+              <FormControlLabel control={<Checkbox id="checkbox2"/>} label="DESCARGA"/>
+              <FormControlLabel control={<Checkbox id="checkbox3"/>} label="AJUDANTES"/>
               <FormControlLabel
-                control={<Checkbox />}
+                control={<Checkbox id="checkbox4" />}
                 label="MATERIAL PARA EMBALAGEM"
               />
               <FormControlLabel
-                control={<Checkbox />}
+                control={<Checkbox id="checkbox5" />}
                 label="EMBALAGEM DE LOUÇAS"
               />
               <FormControlLabel
-                control={<Checkbox />}
+                control={<Checkbox id="checkbox6"/>}
                 label="EMBALAGEM DE MOVEIS"
               />
               <FormControlLabel
-                control={<Checkbox />}
+                control={<Checkbox id="checkbox7"/>}
                 label="DESMONTAGEM DE MOVEIS"
               />
               <FormControlLabel
-                control={<Checkbox />}
+                control={<Checkbox id="checkbox8"/>}
                 label="MONTAGEM DE MOVEIS"
               />
               <FormControlLabel
-                control={<Checkbox />}
+                control={<Checkbox id="checkbox9"/>}
                 label="SERVIÇO DE PERSONAL ORGANIZER"
               />
             </FormGroup>
