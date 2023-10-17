@@ -1,25 +1,26 @@
-//import { useState, useEffect } from "react";
 import { useState } from "react";
-import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
-import './index.css';
+import "./index.css";
 import Api from "../../Api";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+//bootstrao
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
+//toastify
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 //mui
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import Divider from '@mui/material/Divider';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import FormGroup from '@mui/material/FormGroup';
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Divider from "@mui/material/Divider";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
 
 //import nodemailer from 'nodemailer';
 
@@ -42,155 +43,194 @@ function Home() {
   //const [check8, setCheck8] = useState(false);
   //const [check9, setCheck9] = useState(false);
 
-
-
-
   async function EnviarEmail() {
     setLoading(true);
 
     const data = {
-      nome:  nome,
+      nome: nome,
       doc: cpf,
-      email:  email,
+      email: email,
       origem: origem,
       destino: destino,
-      valor: valor
-    }
-    
-    setTextoBotao("Enviando E-mail")
-    await Api.post("/send-mail", data, {headers: {'Content-Type': 'application/json'}}).then(response => {
-      //status 200 sucesso
-      //console.log(response.status);
-      toast.success("E-mail enviado com sucesso.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    }).catch(error => {
-      toast.error("Erro ao enviar E-mail.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-      //status 400 erro
-      //console.log(error.status);
-    });
-   setTextoBotao("Enviar E-mail")
-   setLoading(false);
-   
-  }
+      valor: valor,
+    };
 
+    setTextoBotao("Enviando E-mail");
+    await Api.post("/send-mail", data, {
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => {
+        //status 200 sucesso
+        //console.log(response.status);
+        toast.success("E-mail enviado com sucesso.", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      })
+      .catch((error) => {
+        toast.error("Erro ao enviar E-mail.", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        //status 400 erro
+        //console.log(error.status);
+      });
+    setTextoBotao("Enviar E-mail");
+    setLoading(false);
+  }
 
   return (
     <div className="App">
-
       <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Mudanças Mazutti
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </Box>
-
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            ></IconButton>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Mudanças Mazutti
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </Box>
 
       <Container fluid="md" className="justify-content-md-center container">
-      <ToastContainer />
-      <Paper elevation={1} className="paper">
-      <Divider textAlign="left">Dados do Cliente</Divider>
-      <br></br>
-      <Form>
-      <Box sx={{ width: 1500, maxWidth: '100%',}}>
-      <TextField fullWidth label="Nome" id="cliente" value={nome} onChange={(e) => setNome(e.target.value)} />
-      </Box>
-      <br></br>
-      <Box sx={{ width: 1500, maxWidth: '100%',}}>
-      <TextField fullWidth label="Documento" id="doc" value={cpf} onChange={(e) => setCpf(e.target.value)} />
-      </Box>
-      <br></br>
-      <Box sx={{ width: 1500, maxWidth: '100%',}}>
-      <TextField fullWidth label="E-Mail" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      </Box>
-      
-      <br></br>
-      <Divider textAlign="left">Serviços</Divider>
-      <br></br>
-      <FormGroup>
-      <FormControlLabel control={<Checkbox  />} label="CARGA" />
-      <FormControlLabel control={<Checkbox  />} label="DESCARGA" />
-      <FormControlLabel control={<Checkbox  />} label="AJUDANTES" />
-      <FormControlLabel control={<Checkbox  />} label="MATERIAL PARA EMBALAGEM" />
-      <FormControlLabel control={<Checkbox  />} label="EMBALAGEM DE LOUÇAS" />
-      <FormControlLabel control={<Checkbox  />} label="EMBALAGEM DE MOVEIS" />
-      <FormControlLabel control={<Checkbox  />} label="DESMONTAGEM DE MOVEIS" />
-      <FormControlLabel control={<Checkbox  />} label="MONTAGEM DE MOVEIS" />
-      <FormControlLabel control={<Checkbox  />} label="SERVIÇO DE PERSONAL ORGANIZER" />
-      
-    </FormGroup>
-      
-      <br></br>
-      <Divider textAlign="left">Localização</Divider>
-      <br></br>
-      <Box sx={{ width: 1500, maxWidth: '100%',}}>
-      <TextField fullWidth label="Origem" id="origem" value={origem} onChange={(e) => setOrigem(e.target.value)} />
-      </Box>
-      <br></br>
-      <Box sx={{ width: 1500, maxWidth: '100%',}}>
-      <TextField fullWidth label="Destino" id="destino" value={destino} onChange={(e) => setDestino(e.target.value)} />
-      </Box>
-      <br></br>
-      <Divider textAlign="left">Valor do Orçamento</Divider>
-      <br></br>
-      <Box sx={{ width: 1500, maxWidth: '100%',}}>
-      <TextField fullWidth label="Valor" id="origem" value={valor} onChange={(e) => setValor(e.target.value)} />
-      </Box>
-<br></br>
-      <div className="d-grid gap-2">
-      <Button variant="primary" size="md" onClick={EnviarEmail}>
-        {loading && <Spinner
-          as="span"
-          animation="border"
-          size="sm"
-          role="status"
-          aria-hidden="true"
-        />}
-        {textoBotao}
-      </Button>
+        <ToastContainer />
+        <Paper elevation={1} className="paper">
+          <Divider textAlign="left">Dados do Cliente</Divider>
+          <br></br>
+          <Form>
+            <Box sx={{ width: 1500, maxWidth: "100%" }}>
+              <TextField
+                fullWidth
+                label="Nome"
+                id="cliente"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+              />
+            </Box>
+            <br></br>
+            <Box sx={{ width: 1500, maxWidth: "100%" }}>
+              <TextField
+                fullWidth
+                label="Documento"
+                id="doc"
+                value={cpf}
+                onChange={(e) => setCpf(e.target.value)}
+              />
+            </Box>
+            <br></br>
+            <Box sx={{ width: 1500, maxWidth: "100%" }}>
+              <TextField
+                fullWidth
+                label="E-Mail"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Box>
 
-      
+            <br></br>
+            <Divider textAlign="left">Serviços</Divider>
+            <br></br>
+            <FormGroup>
+              <FormControlLabel control={<Checkbox />} label="CARGA" />
+              <FormControlLabel control={<Checkbox />} label="DESCARGA" />
+              <FormControlLabel control={<Checkbox />} label="AJUDANTES" />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="MATERIAL PARA EMBALAGEM"
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="EMBALAGEM DE LOUÇAS"
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="EMBALAGEM DE MOVEIS"
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="DESMONTAGEM DE MOVEIS"
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="MONTAGEM DE MOVEIS"
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="SERVIÇO DE PERSONAL ORGANIZER"
+              />
+            </FormGroup>
 
-
-      </div>
-
-      </Form>
-    <br></br>
-      </Paper>
-      
-      
-    </Container>
-
-   
-        
-    
+            <br></br>
+            <Divider textAlign="left">Localização</Divider>
+            <br></br>
+            <Box sx={{ width: 1500, maxWidth: "100%" }}>
+              <TextField
+                fullWidth
+                label="Origem"
+                id="origem"
+                value={origem}
+                onChange={(e) => setOrigem(e.target.value)}
+              />
+            </Box>
+            <br></br>
+            <Box sx={{ width: 1500, maxWidth: "100%" }}>
+              <TextField
+                fullWidth
+                label="Destino"
+                id="destino"
+                value={destino}
+                onChange={(e) => setDestino(e.target.value)}
+              />
+            </Box>
+            <br></br>
+            <Divider textAlign="left">Valor do Orçamento</Divider>
+            <br></br>
+            <Box sx={{ width: 1500, maxWidth: "100%" }}>
+              <TextField
+                fullWidth
+                label="Valor"
+                id="origem"
+                value={valor}
+                onChange={(e) => setValor(e.target.value)}
+              />
+            </Box>
+            <br></br>
+            <div className="d-grid gap-2">
+              <Button variant="primary" size="md" onClick={EnviarEmail}>
+                {loading && (
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                )}
+                {textoBotao}
+              </Button>
+            </div>
+          </Form>
+        </Paper>
+      </Container>
     </div>
   );
 }
