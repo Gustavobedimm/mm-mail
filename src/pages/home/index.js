@@ -26,22 +26,23 @@ import FormGroup from "@mui/material/FormGroup";
 
 function Home() {
   const [loading, setLoading] = useState(false);
-  const [textoBotao, setTextoBotao] = useState("Enviar E-mail");
+  const [textoBotao, setTextoBotao] = useState("Enviar");
   const [nome, setNome] = useState("Gustavo Bedim");
   const [cpf, setCpf] = useState("089.168.219-83");
   const [email, setEmail] = useState("gustavo_bmazutti@hotmail.com");
   const [origem, setOrigem] = useState("Cascavel-PR");
   const [destino, setDestino] = useState("Cascavel-PR");
   const [valor, setValor] = useState("9.000,00");
-  //const [check1, setCheck1] = useState(false);
-  //const [check2, setCheck2] = useState(false);
-  //const [check3, setCheck3] = useState(false);
-  //const [check4, setCheck4] = useState(false);
-  //const [check5, setCheck5] = useState(false);
-  //const [check6, setCheck6] = useState(false);
-  //const [check7, setCheck7] = useState(false);
-  //const [check8, setCheck8] = useState(false);
-  //const [check9, setCheck9] = useState(false);
+  const [check1, setCheck1] = useState(false);
+  const [check2, setCheck2] = useState(false);
+  const [check3, setCheck3] = useState(false);
+  const [check4, setCheck4] = useState(false);
+  const [check5, setCheck5] = useState(false);
+  const [check6, setCheck6] = useState(false);
+  const [check7, setCheck7] = useState(false);
+  const [check8, setCheck8] = useState(false);
+  const [check9, setCheck9] = useState(false);
+  const [check10, setCheck10] = useState(false);
 
   async function EnviarEmail() {
     setLoading(true);
@@ -87,8 +88,30 @@ function Home() {
         //status 400 erro
         //console.log(error.status);
       });
-    setTextoBotao("Enviar E-mail");
+    setTextoBotao("Enviar");
     setLoading(false);
+  }
+  function mudaStatus1(){
+    let checkbox = document.getElementById("checkbox1");
+    if(checkbox.checked){
+      alert("checkboxmarcado")
+    }else{alert(checkbox);}
+    
+    
+  }
+  function mudaStatus2(){
+    if(check2 === false){
+      setCheck2(true);
+    }else{
+      setCheck2(false);
+    }
+  }
+  function mudaStatus3(){
+    if(check3 === false){
+      setCheck3(true);
+    }else{
+      setCheck3(false);
+    }
   }
 
   return (
@@ -150,9 +173,9 @@ function Home() {
             <Divider textAlign="left">Serviços</Divider>
             <br></br>
             <FormGroup>
-              <FormControlLabel control={<Checkbox />} label="CARGA" />
-              <FormControlLabel control={<Checkbox />} label="DESCARGA" />
-              <FormControlLabel control={<Checkbox />} label="AJUDANTES" />
+              <FormControlLabel  control={<Checkbox id="checkbox1"/>} label="CARGA" />
+              <FormControlLabel control={<Checkbox/>} label="DESCARGA" checked={check2}/>
+              <FormControlLabel control={<Checkbox onClick={()=>{mudaStatus1()}}/>} label="AJUDANTES" checked={check3}/>
               <FormControlLabel
                 control={<Checkbox />}
                 label="MATERIAL PARA EMBALAGEM"
@@ -215,7 +238,7 @@ function Home() {
             </Box>
             <br></br>
             <div className="d-grid gap-2">
-              <Button variant="primary" size="md" onClick={EnviarEmail}>
+              <Button variant="outline-primary" size="md" onClick={EnviarEmail}>
                 {loading && (
                   <Spinner
                     as="span"
@@ -227,6 +250,7 @@ function Home() {
                 )}
                 {textoBotao}
               </Button>
+              
             </div>
           </Form>
         </Paper>
