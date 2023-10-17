@@ -1,67 +1,168 @@
 //import { useState, useEffect } from "react";
 import { useState } from "react";
 import Container from 'react-bootstrap/Container';
-import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import './index.css';
 import Api from "../../Api";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+//mui
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import Divider from '@mui/material/Divider';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+
 //import nodemailer from 'nodemailer';
 
 function Home() {
   const [loading, setLoading] = useState(false);
   const [textoBotao, setTextoBotao] = useState("Enviar E-mail");
+  const [nome, setNome] = useState("Gustavo Bedim");
+  const [cpf, setCpf] = useState("089.168.219-83");
+  const [email, setEmail] = useState("gustavo_bmazutti@hotmail.com");
+  const [origem, setOrigem] = useState("Cascavel-PR");
+  const [destino, setDestino] = useState("Cascavel-PR");
+  const [valor, setValor] = useState("9.000,00");
+  //const [check1, setCheck1] = useState(false);
+  //const [check2, setCheck2] = useState(false);
+  //const [check3, setCheck3] = useState(false);
+  //const [check4, setCheck4] = useState(false);
+  //const [check5, setCheck5] = useState(false);
+  //const [check6, setCheck6] = useState(false);
+  //const [check7, setCheck7] = useState(false);
+  //const [check8, setCheck8] = useState(false);
+  //const [check9, setCheck9] = useState(false);
+
+
+
 
   async function EnviarEmail() {
     setLoading(true);
+
+    const data = {
+      nome:  nome,
+      doc: cpf,
+      email:  email,
+      origem: origem,
+      destino: destino,
+      valor: valor
+    }
+    
     setTextoBotao("Enviando E-mail")
-   const resposta = await Api.post("/send-mail");
+    await Api.post("/send-mail", data, {headers: {'Content-Type': 'application/json'}}).then(response => {
+      //status 200 sucesso
+      //console.log(response.status);
+      toast.success("E-mail enviado com sucesso.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }).catch(error => {
+      toast.error("Erro ao enviar E-mail.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      //status 400 erro
+      //console.log(error.status);
+    });
    setTextoBotao("Enviar E-mail")
    setLoading(false);
-   console.log(resposta);
+   
   }
 
 
   return (
     <div className="App">
+
+      <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Mudanças Mazutti
+          </Typography>
+        </Toolbar>
+      </AppBar>
+    </Box>
+
+
       <Container fluid="md" className="justify-content-md-center container">
-      <Card className="mt-3">
-      <Card.Header>Mudanças Mazutti - Orçamento de Serviço</Card.Header>
-      <Card.Body>
-    <h4>Cliente</h4>
-    <hr></hr>
+      <ToastContainer />
+      <Paper elevation={1} className="paper">
+      <Divider textAlign="left">Dados do Cliente</Divider>
+      <br></br>
       <Form>
-      <Form.Label htmlFor="NomeCliente">Nome do Cliente</Form.Label>
-      <Form.Control type="text" id="input1" aria-describedby="NomeCliente"/>
-      <Form.Label htmlFor="Doc">CPF ou CNPJ</Form.Label>
-      <Form.Control type="text" id="input2" aria-describedby="Doc"/>
-      <Form.Label htmlFor="Email">Email</Form.Label>
-      <Form.Control type="email" id="input3" aria-describedby="Email"/>
+      <Box sx={{ width: 1500, maxWidth: '100%',}}>
+      <TextField fullWidth label="Nome" id="cliente" value={nome} onChange={(e) => setNome(e.target.value)} />
+      </Box>
       <br></br>
-    <h4>Serviços</h4>
-    <hr></hr>
-      <Form.Check type="checkbox" className="checkbox" label="CARGA" id="1" />
-      <Form.Check type="checkbox" className="checkbox" label="DESCARGA" id="2" />
-      <Form.Check type="checkbox" className="checkbox" label="AJUDANTES" id="3" />
-      <Form.Check type="checkbox" className="checkbox" label="MATERIAL PARA EMBALAGEM" id="4" />
-      <Form.Check type="checkbox" className="checkbox" label="EMBALAGEM DE LOUÇAS" id="5" />
-      <Form.Check type="checkbox" className="checkbox" label="EMBALAGEM DE MOVEIS" id="6" />
-      <Form.Check type="checkbox"  className="checkbox" label="DESMONTAGEM DE MOVEIS" id="7" />
-      <Form.Check type="checkbox" className="checkbox" label="MONTAGEM DE MOVEIS" id="8" />
-      <Form.Check type="checkbox" className="checkbox" label="SERVIÇO DE PERSONAL ORGANIZER" id="9" />
+      <Box sx={{ width: 1500, maxWidth: '100%',}}>
+      <TextField fullWidth label="Documento" id="doc" value={cpf} onChange={(e) => setCpf(e.target.value)} />
+      </Box>
       <br></br>
-    <h4>Localização</h4>
-    <hr></hr>
-      <Form.Label htmlFor="origem">Origem</Form.Label>
-      <Form.Control type="text" id="input4" aria-describedby="origem"/>
-      <Form.Label htmlFor="destino">Destino</Form.Label>
-      <Form.Control type="text" id="input5" aria-describedby="destino"/>
+      <Box sx={{ width: 1500, maxWidth: '100%',}}>
+      <TextField fullWidth label="E-Mail" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      </Box>
+      
       <br></br>
-    <h4>Valor do Serviço</h4>
-    <hr></hr>
-      <Form.Label htmlFor="total">Valor</Form.Label>
-      <Form.Control type="text" id="input6" aria-describedby="total"/>
+      <Divider textAlign="left">Serviços</Divider>
+      <br></br>
+      <FormGroup>
+      <FormControlLabel control={<Checkbox  />} label="CARGA" />
+      <FormControlLabel control={<Checkbox  />} label="DESCARGA" />
+      <FormControlLabel control={<Checkbox  />} label="AJUDANTES" />
+      <FormControlLabel control={<Checkbox  />} label="MATERIAL PARA EMBALAGEM" />
+      <FormControlLabel control={<Checkbox  />} label="EMBALAGEM DE LOUÇAS" />
+      <FormControlLabel control={<Checkbox  />} label="EMBALAGEM DE MOVEIS" />
+      <FormControlLabel control={<Checkbox  />} label="DESMONTAGEM DE MOVEIS" />
+      <FormControlLabel control={<Checkbox  />} label="MONTAGEM DE MOVEIS" />
+      <FormControlLabel control={<Checkbox  />} label="SERVIÇO DE PERSONAL ORGANIZER" />
+      
+    </FormGroup>
+      
+      <br></br>
+      <Divider textAlign="left">Localização</Divider>
+      <br></br>
+      <Box sx={{ width: 1500, maxWidth: '100%',}}>
+      <TextField fullWidth label="Origem" id="origem" value={origem} onChange={(e) => setOrigem(e.target.value)} />
+      </Box>
+      <br></br>
+      <Box sx={{ width: 1500, maxWidth: '100%',}}>
+      <TextField fullWidth label="Destino" id="destino" value={destino} onChange={(e) => setDestino(e.target.value)} />
+      </Box>
+      <br></br>
+      <Divider textAlign="left">Valor do Orçamento</Divider>
+      <br></br>
+      <Box sx={{ width: 1500, maxWidth: '100%',}}>
+      <TextField fullWidth label="Valor" id="origem" value={valor} onChange={(e) => setValor(e.target.value)} />
+      </Box>
 <br></br>
       <div className="d-grid gap-2">
       <Button variant="primary" size="md" onClick={EnviarEmail}>
@@ -81,10 +182,13 @@ function Home() {
       </div>
 
       </Form>
-      </Card.Body>
-    </Card>
     <br></br>
+      </Paper>
+      
+      
     </Container>
+
+   
         
     
     </div>
