@@ -37,51 +37,15 @@ function Home() {
 
   async function EnviarEmail() {
     setLoading(true);
-    let checkbox1 = document.getElementById("checkbox1");
-    let checkbox2 = document.getElementById("checkbox2");
-    let checkbox3 = document.getElementById("checkbox3");
-    let checkbox4 = document.getElementById("checkbox4");
-    let checkbox5 = document.getElementById("checkbox5");
-    let checkbox6 = document.getElementById("checkbox6");
-    let checkbox7 = document.getElementById("checkbox7");
-    let checkbox8 = document.getElementById("checkbox8");
-    let checkbox9 = document.getElementById("checkbox9");
-    const cb1 = false;
-    const cb2 = false;
-    const cb3 = false;
-    const cb4 = false;
-    const cb5 = false;
-    const cb6 = false;
-    const cb7 = false;
-    const cb8 = false;
-    const cb9 = false;
-    if(checkbox1.checked() === true){
-      cb1 = true;
-    }
-    if(checkbox2.checked() === true){
-      cb2 = true;
-    }
-    if(checkbox3.checked() === true){
-      cb3 = true;
-    }
-    if(checkbox4.checked() === true){
-      cb4 = true;
-    }
-    if(checkbox5.checked() === true){
-      cb5 = true;
-    }
-    if(checkbox6.checked() === true){
-      cb6 = true;
-    }
-    if(checkbox7.checked() === true){
-      cb7 = true;
-    }
-    if(checkbox8.checked() === true){
-      cb8 = true;
-    }
-    if(checkbox9.checked() === true){
-      cb9 = true;
-    }
+    let checkbox1 = document.getElementById("checkbox1").checked;
+    let checkbox2 = document.getElementById("checkbox2").checked;
+    let checkbox3 = document.getElementById("checkbox3").checked;
+    let checkbox4 = document.getElementById("checkbox4").checked;
+    let checkbox5 = document.getElementById("checkbox5").checked;
+    let checkbox6 = document.getElementById("checkbox6").checked;
+    let checkbox7 = document.getElementById("checkbox7").checked;
+    let checkbox8 = document.getElementById("checkbox8").checked;
+    let checkbox9 = document.getElementById("checkbox9").checked;
 
     const data = {
       nome: nome,
@@ -90,15 +54,15 @@ function Home() {
       origem: origem,
       destino: destino,
       valor: valor,
-      cb1: cb1,
-      cb2: cb2,
-      cb3: cb3,
-      cb4: cb4,
-      cb5: cb5,
-      cb6: cb6,
-      cb7: cb7,
-      cb8: cb8,
-      cb9: cb9,
+      cb1: checkbox1,
+      cb2: checkbox2,
+      cb3: checkbox3,
+      cb4: checkbox4,
+      cb5: checkbox5,
+      cb6: checkbox6,
+      cb7: checkbox7,
+      cb8: checkbox8,
+      cb9: checkbox9,
     };
 
     setTextoBotao("Enviando E-mail");
