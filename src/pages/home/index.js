@@ -27,15 +27,82 @@ import FormGroup from "@mui/material/FormGroup";
 function Home() {
   const [loading, setLoading] = useState(false);
   const [textoBotao, setTextoBotao] = useState("Enviar");
-  const [nome, setNome] = useState("Gustavo Bedim");
-  const [cpf, setCpf] = useState("089.168.219-83");
-  const [email, setEmail] = useState("gustavo_bmazutti@hotmail.com");
-  const [emailCc, setEmailCc] = useState("gustavo_bmazutti@hotmail.com");
-  const [origem, setOrigem] = useState("Cascavel-PR");
-  const [destino, setDestino] = useState("Cascavel-PR");
-  const [valor, setValor] = useState("9.000,00");
+  const [nome, setNome] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [email, setEmail] = useState("");
+  //const [emailCc, setEmailCc] = useState("gustavo_bmazutti@hotmail.com");
+  const [origem, setOrigem] = useState("");
+  const [destino, setDestino] = useState("");
+  const [valor, setValor] = useState("");
 
   async function EnviarEmail() {
+
+    if(email.length < 1){
+      toast.error("O email deve ser informado.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      return;
+    }
+    if(nome.length < 1){
+      toast.error("O nome deve ser informado.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      return;
+    }
+    if(origem.length < 1){
+      toast.error("A origem deve ser informada.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      return;
+    }
+    if(destino.length < 1){
+      toast.error("O destino deve ser informado.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      return;
+    }
+    if(valor.length < 1){
+      toast.error("O valor deve ser informado.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      return;
+    }
+
     setLoading(true);
     let checkbox1 = document.getElementById("checkbox1").checked;
     let checkbox2 = document.getElementById("checkbox2").checked;
@@ -161,7 +228,7 @@ function Home() {
               />
             </Box>
             <br></br>
-            <Box sx={{ width: 1500, maxWidth: "100%" }}>
+            {/* <Box sx={{ width: 1500, maxWidth: "100%" }}>
               <TextField
                 fullWidth
                 label="Copia para"
@@ -169,8 +236,8 @@ function Home() {
                 value={emailCc}
                 onChange={(e) => setEmailCc(e.target.value)}
               />
-            </Box>
-
+  </Box>*/}
+            
             <br></br>
             <Divider textAlign="left">Serviços</Divider>
             <br></br>
