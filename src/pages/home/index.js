@@ -31,13 +31,104 @@ function Home() {
   const [cpf, setCpf] = useState("");
   const [email, setEmail] = useState("");
   //const [emailCc, setEmailCc] = useState("gustavo_bmazutti@hotmail.com");
-  const [origem, setOrigem] = useState("");
-  const [destino, setDestino] = useState("");
+  const [origem, setOrigem] = useState("CASCAVEL-PR");
+  const [destino, setDestino] = useState("CASCAVEL-PR");
   const [valor, setValor] = useState("");
 
-  async function EnviarEmail() {
+  const [checked1, setChecked1] = useState(false);
+  const [checked2, setChecked2] = useState(false);
+  const [checked3, setChecked3] = useState(false);
+  const [checked4, setChecked4] = useState(false);
+  const [checked5, setChecked5] = useState(false);
+  const [checked6, setChecked6] = useState(false);
+  const [checked7, setChecked7] = useState(false);
+  const [checked8, setChecked8] = useState(false);
+  const [checked9, setChecked9] = useState(false);
 
-    if(email.length < 1){
+  function mudaChe1() {
+    if (checked1) {
+      setChecked1(false);
+    } else {
+      setChecked1(true);
+    }
+  }
+  function mudaChe2() {
+    if (checked2) {
+      setChecked2(false);
+    } else {
+      setChecked2(true);
+    }
+  }
+  function mudaChe3() {
+    if (checked3) {
+      setChecked3(false);
+    } else {
+      setChecked3(true);
+    }
+  }
+  function mudaChe4() {
+    if (checked4) {
+      setChecked4(false);
+    } else {
+      setChecked4(true);
+    }
+  }
+  function mudaChe5() {
+    if (checked5) {
+      setChecked5(false);
+    } else {
+      setChecked5(true);
+    }
+  }
+  function mudaChe6() {
+    if (checked6) {
+      setChecked6(false);
+    } else {
+      setChecked6(true);
+    }
+  }
+  function mudaChe7() {
+    if (checked7) {
+      setChecked7(false);
+    } else {
+      setChecked7(true);
+    }
+  }
+  function mudaChe8() {
+    if (checked8) {
+      setChecked8(false);
+    } else {
+      setChecked8(true);
+    }
+  }
+  function mudaChe9() {
+    if (checked9) {
+      setChecked9(false);
+    } else {
+      setChecked9(true);
+    }
+  }
+
+  function limpaCampos() {
+    setChecked1(false);
+    setChecked2(false);
+    setChecked3(false);
+    setChecked4(false);
+    setChecked5(false);
+    setChecked6(false);
+    setChecked7(false);
+    setChecked8(false);
+    setChecked9(false);
+    setNome("");
+    setCpf("");
+    setEmail("");
+    setOrigem("CASCAVEL-PR");
+    setDestino("CASCAVEL-PR");
+    setValor("");
+  }
+
+  async function EnviarEmail() {
+    if (email.length < 1) {
       toast.error("O email deve ser informado.", {
         position: "top-center",
         autoClose: 3000,
@@ -50,7 +141,7 @@ function Home() {
       });
       return;
     }
-    if(nome.length < 1){
+    if (nome.length < 1) {
       toast.error("O nome deve ser informado.", {
         position: "top-center",
         autoClose: 3000,
@@ -63,7 +154,7 @@ function Home() {
       });
       return;
     }
-    if(origem.length < 1){
+    if (origem.length < 1) {
       toast.error("A origem deve ser informada.", {
         position: "top-center",
         autoClose: 3000,
@@ -76,7 +167,7 @@ function Home() {
       });
       return;
     }
-    if(destino.length < 1){
+    if (destino.length < 1) {
       toast.error("O destino deve ser informado.", {
         position: "top-center",
         autoClose: 3000,
@@ -89,7 +180,7 @@ function Home() {
       });
       return;
     }
-    if(valor.length < 1){
+    if (valor.length < 1) {
       toast.error("O valor deve ser informado.", {
         position: "top-center",
         autoClose: 3000,
@@ -104,15 +195,7 @@ function Home() {
     }
 
     setLoading(true);
-    let checkbox1 = document.getElementById("checkbox1").checked;
-    let checkbox2 = document.getElementById("checkbox2").checked;
-    let checkbox3 = document.getElementById("checkbox3").checked;
-    let checkbox4 = document.getElementById("checkbox4").checked;
-    let checkbox5 = document.getElementById("checkbox5").checked;
-    let checkbox6 = document.getElementById("checkbox6").checked;
-    let checkbox7 = document.getElementById("checkbox7").checked;
-    let checkbox8 = document.getElementById("checkbox8").checked;
-    let checkbox9 = document.getElementById("checkbox9").checked;
+    setTextoBotao("Enviando E-mail");
 
     const data = {
       nome: nome,
@@ -121,22 +204,22 @@ function Home() {
       origem: origem,
       destino: destino,
       valor: valor,
-      cb1: checkbox1,
-      cb2: checkbox2,
-      cb3: checkbox3,
-      cb4: checkbox4,
-      cb5: checkbox5,
-      cb6: checkbox6,
-      cb7: checkbox7,
-      cb8: checkbox8,
-      cb9: checkbox9,
+      cb1: checked1,
+      cb2: checked2,
+      cb3: checked3,
+      cb4: checked4,
+      cb5: checked5,
+      cb6: checked6,
+      cb7: checked7,
+      cb8: checked8,
+      cb9: checked9,
     };
 
-    setTextoBotao("Enviando E-mail");
     await Api.post("/send-mail", data, {
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
+        limpaCampos();
         //status 200 sucesso
         //console.log(response.status);
         toast.success("E-mail enviado com sucesso.", {
@@ -151,7 +234,7 @@ function Home() {
         });
       })
       .catch((error) => {
-        toast.error("Erro ao enviar E-mail.", {
+        toast.error("Erro ao enviar E-mail, verifique o E-Mail informado.", {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: false,
@@ -168,7 +251,7 @@ function Home() {
     setLoading(false);
   }
   //function mudaStatus1(){
-  //  
+  //
   //  if(checkbox.checked){
   //    alert("checkboxmarcado")
   //  }else{alert(checkbox);}
@@ -237,36 +320,118 @@ function Home() {
                 onChange={(e) => setEmailCc(e.target.value)}
               />
   </Box>*/}
-            
+
             <br></br>
             <Divider textAlign="left">Serviços</Divider>
             <br></br>
             <FormGroup>
-              <FormControlLabel  control={<Checkbox id="checkbox1"/>} label="CARGA"/>
-              <FormControlLabel control={<Checkbox id="checkbox2"/>} label="DESCARGA"/>
-              <FormControlLabel control={<Checkbox id="checkbox3"/>} label="AJUDANTES"/>
               <FormControlLabel
-                control={<Checkbox id="checkbox4" />}
+                control={
+                  <Checkbox
+                    id="checkbox1"
+                    checked={checked1}
+                    onClick={() => {
+                      mudaChe1();
+                    }}
+                  />
+                  
+                }
+                label="CARGA"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    id="checkbox2"
+                    checked={checked2}
+                    onClick={() => {
+                      mudaChe2();
+                    }}
+                  />
+                }
+                label="DESCARGA"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    id="checkbox3"
+                    checked={checked3}
+                    onClick={() => {
+                      mudaChe3();
+                    }}
+                  />
+                }
+                label="AJUDANTES"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    id="checkbox4"
+                    checked={checked4}
+                    onClick={() => {
+                      mudaChe4();
+                    }}
+                  />
+                }
                 label="MATERIAL PARA EMBALAGEM"
               />
               <FormControlLabel
-                control={<Checkbox id="checkbox5" />}
+                control={
+                  <Checkbox
+                    id="checkbox5"
+                    checked={checked5}
+                    onClick={() => {
+                      mudaChe5();
+                    }}
+                  />
+                }
                 label="EMBALAGEM DE LOUÇAS"
               />
               <FormControlLabel
-                control={<Checkbox id="checkbox6"/>}
+                control={
+                  <Checkbox
+                    id="checkbox6"
+                    checked={checked6}
+                    onClick={() => {
+                      mudaChe6();
+                    }}
+                  />
+                }
                 label="EMBALAGEM DE MOVEIS"
               />
               <FormControlLabel
-                control={<Checkbox id="checkbox7"/>}
+                control={
+                  <Checkbox
+                    id="checkbox7"
+                    checked={checked7}
+                    onClick={() => {
+                      mudaChe7();
+                    }}
+                  />
+                }
                 label="DESMONTAGEM DE MOVEIS"
               />
               <FormControlLabel
-                control={<Checkbox id="checkbox8"/>}
+                control={
+                  <Checkbox
+                    id="checkbox8"
+                    checked={checked8}
+                    onClick={() => {
+                      mudaChe8();
+                    }}
+                  />
+                }
                 label="MONTAGEM DE MOVEIS"
               />
               <FormControlLabel
-                control={<Checkbox id="checkbox9"/>}
+                control={
+                  <Checkbox
+                    id="checkbox9"
+                    checked={checked9}
+                    onClick={() => {
+                      mudaChe9();
+                    }}
+                  />
+                }
                 label="SERVIÇO DE PERSONAL ORGANIZER"
               />
             </FormGroup>
@@ -307,7 +472,7 @@ function Home() {
             </Box>
             <br></br>
             <div className="d-grid gap-2">
-              <Button variant="outline-primary" size="md" onClick={EnviarEmail}>
+              <Button variant="primary" size="lg" onClick={EnviarEmail}>
                 {loading && (
                   <Spinner
                     as="span"
@@ -319,7 +484,6 @@ function Home() {
                 )}
                 {textoBotao}
               </Button>
-              
             </div>
           </Form>
         </Paper>
