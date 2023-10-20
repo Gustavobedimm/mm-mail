@@ -1,6 +1,18 @@
 import { useState } from "react";
 import "./index.css";
 import Api from "../../Api";
+import { db } from "../../firebaseConection";
+import {
+  doc,
+  setDoc,
+  collection,
+  addDoc,
+  getDoc,
+  onSnapshot,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+} from "firebase/firestore";
 //bootstrao
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -28,6 +40,7 @@ import Menu from '@mui/material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Switch from '@mui/material/Switch';
 
+
 //import nodemailer from 'nodemailer';
 
 function Home() {
@@ -54,6 +67,7 @@ function Home() {
   const [checked8, setChecked8] = useState(false);
   const [checked9, setChecked9] = useState(false);
   const [auth, setAuth] = useState(true);
+  const [string64 , setString64] = useState("");
   //App BAR
   const [anchorEl, setAnchorEl] = useState(null);
   const handleMenu = (event) => {
@@ -71,10 +85,9 @@ function Home() {
     }
   }
   function montaPDF(response){
-    if(preVisualiza){
-
-    
     const base64PDF = response.data.pdfBase64;
+    setString64(base64PDF);
+    if(preVisualiza){
     var byteCharacters = atob(base64PDF);
     var byteNumbers = new Array(byteCharacters.length);
     for (var i = 0; i < byteCharacters.length; i++) {
@@ -88,6 +101,44 @@ function Home() {
     
     //window.open("data:application/pdf;base64, " + base64PDF);
     //window.open("data:application/pdf," + escape(base64PDF));
+  }
+  //--banco de dados
+  async function AddEmail() {
+    const date = new Date();
+    const dia = date.getDate();
+    const mes = date.getMonth() + 1;
+    const ano = date.getFullYear();
+    const h = date.getHours();
+    const m = date.getMinutes();
+    const StringdataAtual = dia + "/" + mes + "/" + ano + " " + h + ":" + m;
+    
+    
+    //CADASTRAR NOVO
+    await addDoc(collection(db, "emailmm"), {
+      nome: nome,
+      doc: cpf,
+      email: email,
+      origem: origem,
+      destino: destino,
+      valor: valor,
+      obs: obs,
+      cb1: checked1,
+      cb2: checked2,
+      cb3: checked3,
+      cb4: checked4,
+      cb5: checked5,
+      cb6: checked6,
+      cb7: checked7,
+      cb8: checked8,
+      cb9: checked9,
+      base64PDF: string64,
+      dataEnvio: StringdataAtual,
+    })
+      .then(() => {
+      })
+      .catch((error) => {
+        console.log("erro ao gravar em banco"+error)
+      });
   }
 
   function mudaChe1() {
@@ -175,6 +226,7 @@ function Home() {
   }
 
   async function EnviarEmail() {
+    const base64 = "";
     if (email.length < 1) {
       toast.error("O email deve ser informado.", {
         position: "top-center",
@@ -268,7 +320,10 @@ function Home() {
     })
       .then((response) => {
         limpaCampos();
+        
+        //base64 = response.data.pdfBase64;
         montaPDF(response);
+        
         //status 200 sucesso
         //console.log(response.status);
         toast.success("E-mail enviado com sucesso.", {
@@ -296,6 +351,7 @@ function Home() {
         //status 400 erro
         //console.log(error.status);
       });
+      AddEmail();
     setTextoBotao("Enviar");
     setLoading(false);
   }
