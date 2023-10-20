@@ -159,10 +159,10 @@ function Home() {
 
       <Container fluid="md" className="justify-content-md-center container">
         
-        <Paper elevation={1} className="paper">
+        <Paper elevation={1} className="paperModificado">
         {listaEnviados.map((email) => {
                   return (
-    <Card className="card">
+    <Card className="cardModificado">
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
