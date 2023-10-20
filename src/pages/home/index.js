@@ -21,6 +21,7 @@ import Spinner from "react-bootstrap/Spinner";
 //toastify
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 //mui
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -68,6 +69,14 @@ function Home() {
   const [checked9, setChecked9] = useState(false);
   const [auth, setAuth] = useState(true);
   const [string64 , setString64] = useState("");
+
+  const navigate = useNavigate();
+  const goEnviado = () => {
+    navigate("/enviados");
+  };
+
+
+
   //App BAR
   const [anchorEl, setAnchorEl] = useState(null);
   const handleMenu = (event) => {
@@ -85,9 +94,8 @@ function Home() {
     }
   }
   function montaPDF(response){
-    const base64PDF = response.data.pdfBase64;
-    setString64(base64PDF);
     if(preVisualiza){
+    const base64PDF = response.data.pdfBase64;
     var byteCharacters = atob(base64PDF);
     var byteNumbers = new Array(byteCharacters.length);
     for (var i = 0; i < byteCharacters.length; i++) {
@@ -96,8 +104,11 @@ function Home() {
   var byteArray = new Uint8Array(byteNumbers);
   var file = new Blob([byteArray], { type: 'application/pdf;base64' });
   var fileURL = URL.createObjectURL(file);
+  //add registro banco
   window.open(fileURL);
-}
+  setString64("byteCharacters");
+  AddEmail();
+  }
     
     //window.open("data:application/pdf;base64, " + base64PDF);
     //window.open("data:application/pdf," + escape(base64PDF));
@@ -226,7 +237,6 @@ function Home() {
   }
 
   async function EnviarEmail() {
-    const base64 = "";
     if (email.length < 1) {
       toast.error("O email deve ser informado.", {
         position: "top-center",
@@ -319,7 +329,7 @@ function Home() {
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
-        limpaCampos();
+        //limpaCampos();
         
         //base64 = response.data.pdfBase64;
         montaPDF(response);
@@ -351,7 +361,7 @@ function Home() {
         //status 400 erro
         //console.log(error.status);
       });
-      AddEmail();
+      //AddEmail();
     setTextoBotao("Enviar");
     setLoading(false);
   }
@@ -406,7 +416,7 @@ function Home() {
                 onClose={handleClose}
               >
                 <MenuItem onClick={() => {limpaCampos() } }>Limpar Campos</MenuItem>
-                <MenuItem onClick={handleClose}>E-Mails Enviados</MenuItem>
+                <MenuItem onClick={()=>{goEnviado()}}>E-Mails Enviados</MenuItem>
               </Menu>
             </div>
           )}
