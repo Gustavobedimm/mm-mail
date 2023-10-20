@@ -42,6 +42,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
+import Chip from '@mui/material/Chip';
 
 //import nodemailer from 'nodemailer';
 
@@ -159,25 +160,32 @@ function Home() {
 
       <Container fluid="md" className="justify-content-md-center container">
         
-        <Paper elevation={1} className="paperModificado">
+        <Paper elevation={0} className="paperModificado">
         {listaEnviados.map((email) => {
                   return (
     <Card className="cardModificado">
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {email.nome}
+            {email.nome} <Chip className="chipStatus" color="success" size="small" label="Enviado" />
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <p>Email do Cliente : {email.email}</p>
-            <p>Enviado em : {email.dataEnvio}</p>
-            <p>Observação: {email.obs}</p>
+            Email do Cliente : {email.email}
           </Typography>
+          <Typography variant="body2" color="text.secondary">Enviado em : {email.dataEnvio}</Typography>
+          <Typography variant="body2" color="text.secondary">Observação: {email.obs}</Typography>
+          <Typography variant="body2" color="text.secondary">Origem: {email.origem} Destino : {email.destino}</Typography>
+          
+            
+            
         </CardContent>
       </CardActionArea>
       <CardActions>
         <Button size="small" color="primary">
           Valor do orçamento R$ {email.valor}
+        </Button>
+        <Button size="small" color="error">
+          Visualizar PDF
         </Button>
       </CardActions>
     </Card>
