@@ -4,7 +4,7 @@ import Api from "../../Api";
 //bootstrao
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+//import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 //toastify
 import { ToastContainer, toast } from "react-toastify";
@@ -21,6 +21,12 @@ import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
+import Button from '@mui/material/Button';
+import MenuIcon from '@mui/icons-material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import SettingsIcon from '@mui/icons-material/Settings';
+import Switch from '@mui/material/Switch';
 
 //import nodemailer from 'nodemailer';
 
@@ -34,6 +40,9 @@ function Home() {
   const [origem, setOrigem] = useState("CASCAVEL-PR");
   const [destino, setDestino] = useState("CASCAVEL-PR");
   const [valor, setValor] = useState("");
+  const [obs, setObs] = useState("");
+  const [preVisualiza, setPreVisualiza] = useState(false);
+  
 
   const [checked1, setChecked1] = useState(false);
   const [checked2, setChecked2] = useState(false);
@@ -44,6 +53,42 @@ function Home() {
   const [checked7, setChecked7] = useState(false);
   const [checked8, setChecked8] = useState(false);
   const [checked9, setChecked9] = useState(false);
+  const [auth, setAuth] = useState(true);
+  //App BAR
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  //PDF
+  function ativaVisualizacao(){
+    if(preVisualiza === false){
+      setPreVisualiza(true);
+    }else{
+      setPreVisualiza(false);
+    }
+  }
+  function montaPDF(response){
+    if(preVisualiza){
+
+    
+    const base64PDF = response.data.pdfBase64;
+    var byteCharacters = atob(base64PDF);
+    var byteNumbers = new Array(byteCharacters.length);
+    for (var i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  var byteArray = new Uint8Array(byteNumbers);
+  var file = new Blob([byteArray], { type: 'application/pdf;base64' });
+  var fileURL = URL.createObjectURL(file);
+  window.open(fileURL);
+}
+    
+    //window.open("data:application/pdf;base64, " + base64PDF);
+    //window.open("data:application/pdf," + escape(base64PDF));
+  }
 
   function mudaChe1() {
     if (checked1) {
@@ -110,6 +155,7 @@ function Home() {
   }
 
   function limpaCampos() {
+    handleClose();
     setChecked1(false);
     setChecked2(false);
     setChecked3(false);
@@ -125,6 +171,7 @@ function Home() {
     setOrigem("CASCAVEL-PR");
     setDestino("CASCAVEL-PR");
     setValor("");
+    setObs("");
   }
 
   async function EnviarEmail() {
@@ -204,6 +251,7 @@ function Home() {
       origem: origem,
       destino: destino,
       valor: valor,
+      obs: obs,
       cb1: checked1,
       cb2: checked2,
       cb3: checked3,
@@ -220,6 +268,7 @@ function Home() {
     })
       .then((response) => {
         limpaCampos();
+        montaPDF(response);
         //status 200 sucesso
         //console.log(response.status);
         toast.success("E-mail enviado com sucesso.", {
@@ -259,21 +308,55 @@ function Home() {
   return (
     <div className="App">
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            ></IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Mudanças Mazutti
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      </Box>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Mudanças Mazutti
+          </Typography>
+          {auth && (
+            <div>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <SettingsIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={() => {limpaCampos() } }>Limpar Campos</MenuItem>
+                <MenuItem onClick={handleClose}>E-Mails Enviados</MenuItem>
+              </Menu>
+            </div>
+          )}
+        </Toolbar>
+      </AppBar>
+    </Box>
 
       <Container fluid="md" className="justify-content-md-center container">
         <ToastContainer />
@@ -288,19 +371,19 @@ function Home() {
                 id="cliente"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
+                autoFocus 
               />
             </Box>
             <br></br>
-            <Box sx={{ width: 1500, maxWidth: "100%" }}>
+            {/*<Box sx={{ width: 1500, maxWidth: "100%" }}>
               <TextField
                 fullWidth
                 label="Documento"
                 id="doc"
                 value={cpf}
                 onChange={(e) => setCpf(e.target.value)}
-              />
-            </Box>
-            <br></br>
+              /
+            </Box>>*/}
             <Box sx={{ width: 1500, maxWidth: "100%" }}>
               <TextField
                 fullWidth
@@ -321,7 +404,6 @@ function Home() {
               />
   </Box>*/}
 
-            <br></br>
             <Divider textAlign="left">Serviços</Divider>
             <br></br>
             <FormGroup>
@@ -435,6 +517,17 @@ function Home() {
                 label="SERVIÇO DE PERSONAL ORGANIZER"
               />
             </FormGroup>
+            <br></br>
+            <Box sx={{ width: 1500, maxWidth: "100%" }}>
+              <TextField
+                fullWidth
+                label="Observação"
+                id="obs"
+                value={obs} 
+                onChange={(e) => setObs(e.target.value.toUpperCase())}
+                helperText="Observação sobre os serviços prestados"
+              />
+            </Box>
 
             <br></br>
             <Divider textAlign="left">Localização</Divider>
@@ -445,7 +538,7 @@ function Home() {
                 label="Origem"
                 id="origem"
                 value={origem}
-                onChange={(e) => setOrigem(e.target.value)}
+                onChange={(e) => setOrigem(e.target.value.toUpperCase())}
               />
             </Box>
             <br></br>
@@ -455,7 +548,7 @@ function Home() {
                 label="Destino"
                 id="destino"
                 value={destino}
-                onChange={(e) => setDestino(e.target.value)}
+                onChange={(e) => setDestino(e.target.value.toUpperCase())}
               />
             </Box>
             <br></br>
@@ -472,8 +565,14 @@ function Home() {
             </Box>
             <br></br>
             <div className="d-grid gap-2">
-              <Button variant="primary" size="lg" onClick={EnviarEmail}>
-                {loading && (
+            <FormControlLabel
+          control={
+            <Switch checked={preVisualiza} onChange={()=>{ativaVisualizacao()}} name="jason" />
+          }
+          label="Visualiza PDF"
+        />
+              <Button variant="contained"  onClick={EnviarEmail}>
+              {loading && (
                   <Spinner
                     as="span"
                     animation="border"
@@ -482,8 +581,7 @@ function Home() {
                     aria-hidden="true"
                   />
                 )}
-                {textoBotao}
-              </Button>
+                {textoBotao}</Button>
             </div>
           </Form>
         </Paper>
