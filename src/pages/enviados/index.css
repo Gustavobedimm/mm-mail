@@ -1,0 +1,17 @@
+.container {
+  background-color: white;
+}
+
+.paper {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 15px;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card{
+    width: 100%;
+    margin-bottom: 15px;
+}
