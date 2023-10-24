@@ -61,6 +61,19 @@ function Home() {
     navigate("/");
   };
 
+  function montaPDF(baseString){
+    const base64PDF = baseString;
+    var byteCharacters = atob(base64PDF);
+    var byteNumbers = new Array(byteCharacters.length);
+    for (var i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  var byteArray = new Uint8Array(byteNumbers);
+  var file = new Blob([byteArray], { type: 'application/pdf;base64' });
+  var fileURL = URL.createObjectURL(file);
+  window.open(fileURL);
+  }
+
   useEffect(() => {
     async function loadEnviados() {
       const unsub = onSnapshot(collection(db, "emailmm"), (snapshot2) => {
@@ -73,6 +86,7 @@ function Home() {
             origem: doc.data().origem,
             destino: doc.data().destino,
             valor: doc.data().valor,
+            enviaEmail: doc.data().enviaEmail,
             obs: doc.data().obs,
             cb1: doc.data().cb1,
             cb2: doc.data().cb2,
@@ -89,8 +103,8 @@ function Home() {
         });
         //ordena por sequencia
         //lista2.sort(function (a, b) {
-       //   return b.sequencia - a.sequencia;
-       // });
+        //  return b.dataEnvio < a.dataEnvio;
+        //});
         //pega o jogo de maior sequencia
         //const jogo = lista2[0];
         setListaEnviados(lista2);
@@ -167,7 +181,7 @@ function Home() {
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {email.nome} <Chip className="chipStatus" color="success" size="small" label="Enviado" />
+            {email.nome}  {email.enviaEmail && (<Chip className="chipStatus" color="success" size="small" label="Enviado" />)}{!email.enviaEmail && (<Chip className="chipStatus" color="error" size="small" label="Não Enviado" />)}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Email do Cliente : {email.email}
@@ -182,10 +196,10 @@ function Home() {
       </CardActionArea>
       <CardActions>
         <Button size="small" color="primary">
-          Valor do orçamento R$ {email.valor}
+          <b>R$ {email.valor}</b>
         </Button>
-        <Button size="small" color="error">
-          Visualizar PDF
+        <Button size="small" color="error" onClick={()=>{montaPDF(email.base64PDF)}}>
+          <b>Visualizar PDF</b>
         </Button>
       </CardActions>
     </Card>

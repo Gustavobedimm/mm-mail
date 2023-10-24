@@ -56,6 +56,7 @@ function Home() {
   const [valor, setValor] = useState("");
   const [obs, setObs] = useState("");
   const [preVisualiza, setPreVisualiza] = useState(false);
+  const [enviaEmail, setEnviaEmail] = useState(true);
   
 
   const [checked1, setChecked1] = useState(false);
@@ -93,9 +94,16 @@ function Home() {
       setPreVisualiza(false);
     }
   }
+  function desativaEmail(){
+    if(enviaEmail === false){
+      setEnviaEmail(true);
+    }else{
+      setEnviaEmail(false);
+    }
+  }
   function montaPDF(response){
-    if(preVisualiza){
     const base64PDF = response.data.pdfBase64;
+    if(preVisualiza){
     var byteCharacters = atob(base64PDF);
     var byteNumbers = new Array(byteCharacters.length);
     for (var i = 0; i < byteCharacters.length; i++) {
@@ -106,15 +114,11 @@ function Home() {
   var fileURL = URL.createObjectURL(file);
   //add registro banco
   window.open(fileURL);
-  setString64("byteCharacters");
-  AddEmail();
   }
-    
-    //window.open("data:application/pdf;base64, " + base64PDF);
-    //window.open("data:application/pdf," + escape(base64PDF));
+  AddEmail(base64PDF);
   }
   //--banco de dados
-  async function AddEmail() {
+  async function AddEmail(base64PDF) {
     const date = new Date();
     const dia = date.getDate();
     const mes = date.getMonth() + 1;
@@ -133,6 +137,7 @@ function Home() {
       destino: destino,
       valor: valor,
       obs: obs,
+      enviaEmail: enviaEmail,
       cb1: checked1,
       cb2: checked2,
       cb3: checked3,
@@ -142,10 +147,11 @@ function Home() {
       cb7: checked7,
       cb8: checked8,
       cb9: checked9,
-      base64PDF: string64,
+      base64PDF: base64PDF,
       dataEnvio: StringdataAtual,
     })
       .then(() => {
+        console.log("gravado no banco")
       })
       .catch((error) => {
         console.log("erro ao gravar em banco"+error)
@@ -314,6 +320,7 @@ function Home() {
       destino: destino,
       valor: valor,
       obs: obs,
+      enviaEmail: enviaEmail,
       cb1: checked1,
       cb2: checked2,
       cb3: checked3,
@@ -329,8 +336,7 @@ function Home() {
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
-        //limpaCampos();
-        
+        limpaCampos();
         //base64 = response.data.pdfBase64;
         montaPDF(response);
         
@@ -633,7 +639,13 @@ function Home() {
             <div className="d-grid gap-2">
             <FormControlLabel
           control={
-            <Switch checked={preVisualiza} onChange={()=>{ativaVisualizacao()}} name="jason" />
+            <Switch checked={enviaEmail} onChange={()=>{desativaEmail()}} name="jason" color="success"/>
+          }
+          label="Envia E-Mail"
+        />
+            <FormControlLabel
+          control={
+            <Switch checked={preVisualiza} onChange={()=>{ativaVisualizacao()}} name="jason" color="success"/>
           }
           label="Visualiza PDF"
         />
