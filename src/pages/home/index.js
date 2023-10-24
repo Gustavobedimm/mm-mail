@@ -432,7 +432,7 @@ function Home() {
 
       <Container fluid="md" className="justify-content-md-center container">
         <ToastContainer />
-        <Paper elevation={1} className="paper">
+        <Paper elevation={0} className="paper">
           <Divider textAlign="left">Dados do Cliente</Divider>
           <br></br>
           <Form>
