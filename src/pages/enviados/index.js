@@ -15,6 +15,11 @@ import {
 import { useNavigate } from "react-router-dom";
 //bootstrao
 import Container from "react-bootstrap/Container";
+import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
+import SendIcon from '@mui/icons-material/Send';
+import CancelScheduleSendIcon from '@mui/icons-material/CancelScheduleSend';
+import UnsubscribeIcon from '@mui/icons-material/Unsubscribe';
+import EmailIcon from '@mui/icons-material/Email';
 import Form from "react-bootstrap/Form";
 //import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
@@ -56,6 +61,8 @@ function Home() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  
   const navigate = useNavigate();
   const goEnviado = () => {
     navigate("/");
@@ -119,20 +126,22 @@ function Home() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
+            {/*
+                    <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>*/}
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Mudanças Mazutti
             </Typography>
             {auth && (
               <div>
+                
                 <IconButton
                   size="large"
                   aria-label="account of current user"
@@ -141,7 +150,8 @@ function Home() {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  <SettingsIcon />
+                  <MenuIcon />
+                  
                 </IconButton>
                 <Menu
                   id="menu-appbar"
@@ -158,6 +168,7 @@ function Home() {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
+                  
                   <MenuItem
                     onClick={() => {
                       goEnviado();
@@ -181,13 +192,12 @@ function Home() {
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {email.nome}  {email.enviaEmail && (<Chip className="chipStatus" color="success" size="small" label="Enviado" />)}{!email.enviaEmail && (<Chip className="chipStatus" color="error" size="small" label="Não Enviado" />)}
+            {email.nome}  {email.enviaEmail && (<EmailIcon/>)}{!email.enviaEmail && (<UnsubscribeIcon/>)}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Email do Cliente : {email.email}
+            Email : {email.email} enviado em {email.dataEnvio}
           </Typography>
-          <Typography variant="body2" color="text.secondary">Enviado em : {email.dataEnvio}</Typography>
-          <Typography variant="body2" color="text.secondary">Observação: {email.obs}</Typography>
+          {/*<Typography variant="body2" color="text.secondary">Observação: {email.obs}</Typography>*/}
           <Typography variant="body2" color="text.secondary">Origem: {email.origem} Destino : {email.destino}</Typography>
           
             
@@ -199,7 +209,8 @@ function Home() {
           <b>R$ {email.valor}</b>
         </Button>
         <Button size="small" color="error" onClick={()=>{montaPDF(email.base64PDF)}}>
-          <b>Visualizar PDF</b>
+          <DownloadForOfflineIcon></DownloadForOfflineIcon>
+          <b> Baixar PDF</b>
         </Button>
       </CardActions>
     </Card>

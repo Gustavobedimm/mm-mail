@@ -76,6 +76,10 @@ function Home() {
     navigate("/enviados");
   };
 
+  const formatCurrency = (value, currency, localeString) => {
+    const options = { style: "currency", currency }
+    setValor(value.toLocaleString(localeString, options));
+  }
 
 
   //App BAR
@@ -382,7 +386,8 @@ function Home() {
       <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
+          {/*
+                    <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -390,7 +395,7 @@ function Home() {
             sx={{ mr: 2 }}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton>*/}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Mudanças Mazutti
           </Typography>
@@ -404,7 +409,7 @@ function Home() {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <SettingsIcon />
+                <MenuIcon />
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -632,20 +637,23 @@ function Home() {
                 label="Valor"
                 id="origem"
                 value={valor}
-                onChange={(e) => setValor(e.target.value)}
+                onChange={(e) => formatCurrency(e.target.value, 'BRL', 'pt-BR')}
               />
             </Box>
             <br></br>
             <div className="d-grid gap-2">
+            
+            <Divider textAlign="left">Configurações</Divider>
+            <br></br>
             <FormControlLabel
           control={
-            <Switch checked={enviaEmail} onChange={()=>{desativaEmail()}} name="jason" color="success"/>
+            <Switch checked={enviaEmail} onChange={()=>{desativaEmail()}} name="jason" color="primary"/>
           }
           label="Envia E-Mail"
         />
             <FormControlLabel
           control={
-            <Switch checked={preVisualiza} onChange={()=>{ativaVisualizacao()}} name="jason" color="success"/>
+            <Switch checked={preVisualiza} onChange={()=>{ativaVisualizacao()}} name="jason" color="primary"/>
           }
           label="Visualiza PDF"
         />
