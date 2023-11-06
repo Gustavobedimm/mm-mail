@@ -2,17 +2,7 @@ import { useState } from "react";
 import "./index.css";
 import Api from "../../Api";
 import { db } from "../../firebaseConection";
-import {
-  doc,
-  setDoc,
-  collection,
-  addDoc,
-  getDoc,
-  onSnapshot,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 //bootstrao
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -34,15 +24,11 @@ import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
-import Button from '@mui/material/Button';
-import MenuIcon from '@mui/icons-material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import SettingsIcon from '@mui/icons-material/Settings';
-import Switch from '@mui/material/Switch';
-
-
-//import nodemailer from 'nodemailer';
+import Button from "@mui/material/Button";
+import MenuIcon from "@mui/icons-material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import Switch from "@mui/material/Switch";
 
 function Home() {
   const [loading, setLoading] = useState(false);
@@ -50,14 +36,12 @@ function Home() {
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
   const [email, setEmail] = useState("");
-  //const [emailCc, setEmailCc] = useState("gustavo_bmazutti@hotmail.com");
   const [origem, setOrigem] = useState("CASCAVEL-PR");
   const [destino, setDestino] = useState("CASCAVEL-PR");
   const [valor, setValor] = useState("");
   const [obs, setObs] = useState("");
   const [preVisualiza, setPreVisualiza] = useState(false);
   const [enviaEmail, setEnviaEmail] = useState(true);
-  
 
   const [checked1, setChecked1] = useState(false);
   const [checked2, setChecked2] = useState(false);
@@ -69,7 +53,6 @@ function Home() {
   const [checked8, setChecked8] = useState(false);
   const [checked9, setChecked9] = useState(false);
   const [auth, setAuth] = useState(true);
-  const [string64 , setString64] = useState("");
 
   const navigate = useNavigate();
   const goEnviado = () => {
@@ -77,10 +60,9 @@ function Home() {
   };
 
   const formatCurrency = (value, currency, localeString) => {
-    const options = { style: "currency", currency }
+    const options = { style: "currency", currency };
     setValor(value.toLocaleString(localeString, options));
-  }
-
+  };
 
   //App BAR
   const [anchorEl, setAnchorEl] = useState(null);
@@ -91,35 +73,35 @@ function Home() {
     setAnchorEl(null);
   };
   //PDF
-  function ativaVisualizacao(){
-    if(preVisualiza === false){
+  function ativaVisualizacao() {
+    if (preVisualiza === false) {
       setPreVisualiza(true);
-    }else{
+    } else {
       setPreVisualiza(false);
     }
   }
-  function desativaEmail(){
-    if(enviaEmail === false){
+  function desativaEmail() {
+    if (enviaEmail === false) {
       setEnviaEmail(true);
-    }else{
+    } else {
       setEnviaEmail(false);
     }
   }
-  function montaPDF(response){
+  function montaPDF(response) {
     const base64PDF = response.data.pdfBase64;
-    if(preVisualiza){
-    var byteCharacters = atob(base64PDF);
-    var byteNumbers = new Array(byteCharacters.length);
-    for (var i = 0; i < byteCharacters.length; i++) {
-    byteNumbers[i] = byteCharacters.charCodeAt(i);
-  }
-  var byteArray = new Uint8Array(byteNumbers);
-  var file = new Blob([byteArray], { type: 'application/pdf;base64' });
-  var fileURL = URL.createObjectURL(file);
-  //add registro banco
-  window.open(fileURL);
-  }
-  AddEmail(base64PDF);
+    if (preVisualiza) {
+      var byteCharacters = atob(base64PDF);
+      var byteNumbers = new Array(byteCharacters.length);
+      for (var i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      var byteArray = new Uint8Array(byteNumbers);
+      var file = new Blob([byteArray], { type: "application/pdf;base64" });
+      var fileURL = URL.createObjectURL(file);
+      //add registro banco
+      window.open(fileURL);
+    }
+    AddEmail(base64PDF);
   }
   //--banco de dados
   async function AddEmail(base64PDF) {
@@ -130,8 +112,7 @@ function Home() {
     const h = date.getHours();
     const m = date.getMinutes();
     const StringdataAtual = dia + "/" + mes + "/" + ano + " " + h + ":" + m;
-    
-    
+
     //CADASTRAR NOVO
     await addDoc(collection(db, "emailmm"), {
       nome: nome,
@@ -155,10 +136,10 @@ function Home() {
       dataEnvio: StringdataAtual,
     })
       .then(() => {
-        console.log("gravado no banco")
+        console.log("gravado no banco");
       })
       .catch((error) => {
-        console.log("erro ao gravar em banco"+error)
+        console.log("erro ao gravar em banco" + error);
       });
   }
 
@@ -341,11 +322,9 @@ function Home() {
     })
       .then((response) => {
         limpaCampos();
-        //base64 = response.data.pdfBase64;
+
         montaPDF(response);
-        
-        //status 200 sucesso
-        //console.log(response.status);
+
         toast.success("E-mail enviado com sucesso.", {
           position: "top-center",
           autoClose: 3000,
@@ -368,72 +347,67 @@ function Home() {
           progress: undefined,
           theme: "dark",
         });
-        //status 400 erro
-        //console.log(error.status);
       });
-      //AddEmail();
+
     setTextoBotao("Enviar");
     setLoading(false);
   }
-  //function mudaStatus1(){
-  //
-  //  if(checkbox.checked){
-  //    alert("checkboxmarcado")
-  //  }else{alert(checkbox);}
-  //}
+
   return (
     <div className="App">
       <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          {/*
-                    <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>*/}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Mudanças Mazutti
-          </Typography>
-          {auth && (
-            <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={() => {limpaCampos() } }>Limpar Campos</MenuItem>
-                <MenuItem onClick={()=>{goEnviado()}}>E-Mails Enviados</MenuItem>
-              </Menu>
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
-    </Box>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Mudanças Mazutti
+            </Typography>
+            {auth && (
+              <div>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem
+                    onClick={() => {
+                      limpaCampos();
+                    }}
+                  >
+                    Limpar Campos
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      goEnviado();
+                    }}
+                  >
+                    E-Mails Enviados
+                  </MenuItem>
+                </Menu>
+              </div>
+            )}
+          </Toolbar>
+        </AppBar>
+      </Box>
 
       <Container fluid="md" className="justify-content-md-center container">
         <ToastContainer />
@@ -448,19 +422,10 @@ function Home() {
                 id="cliente"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
-                autoFocus 
+                autoFocus
               />
             </Box>
             <br></br>
-            {/*<Box sx={{ width: 1500, maxWidth: "100%" }}>
-              <TextField
-                fullWidth
-                label="Documento"
-                id="doc"
-                value={cpf}
-                onChange={(e) => setCpf(e.target.value)}
-              /
-            </Box>>*/}
             <Box sx={{ width: 1500, maxWidth: "100%" }}>
               <TextField
                 fullWidth
@@ -471,16 +436,6 @@ function Home() {
               />
             </Box>
             <br></br>
-            {/* <Box sx={{ width: 1500, maxWidth: "100%" }}>
-              <TextField
-                fullWidth
-                label="Copia para"
-                id="CC"
-                value={emailCc}
-                onChange={(e) => setEmailCc(e.target.value)}
-              />
-  </Box>*/}
-
             <Divider textAlign="left">Serviços</Divider>
             <br></br>
             <FormGroup>
@@ -493,7 +448,6 @@ function Home() {
                       mudaChe1();
                     }}
                   />
-                  
                 }
                 label="CARGA"
               />
@@ -600,7 +554,7 @@ function Home() {
                 fullWidth
                 label="Observação"
                 id="obs"
-                value={obs} 
+                value={obs}
                 onChange={(e) => setObs(e.target.value.toUpperCase())}
                 helperText="Observação sobre os serviços prestados"
               />
@@ -637,28 +591,41 @@ function Home() {
                 label="Valor"
                 id="origem"
                 value={valor}
-                onChange={(e) => formatCurrency(e.target.value, 'BRL', 'pt-BR')}
+                onChange={(e) => formatCurrency(e.target.value, "BRL", "pt-BR")}
               />
             </Box>
             <br></br>
             <div className="d-grid gap-2">
-            
-            <Divider textAlign="left">Configurações</Divider>
-            <br></br>
-            <FormControlLabel
-          control={
-            <Switch checked={enviaEmail} onChange={()=>{desativaEmail()}} name="jason" color="primary"/>
-          }
-          label="Envia E-Mail"
-        />
-            <FormControlLabel
-          control={
-            <Switch checked={preVisualiza} onChange={()=>{ativaVisualizacao()}} name="jason" color="primary"/>
-          }
-          label="Visualiza PDF"
-        />
-              <Button variant="contained"  onClick={EnviarEmail}>
-              {loading && (
+              <Divider textAlign="left">Configurações</Divider>
+              <br></br>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={enviaEmail}
+                    onChange={() => {
+                      desativaEmail();
+                    }}
+                    name="jason"
+                    color="primary"
+                  />
+                }
+                label="Envia E-Mail"
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={preVisualiza}
+                    onChange={() => {
+                      ativaVisualizacao();
+                    }}
+                    name="jason"
+                    color="primary"
+                  />
+                }
+                label="Visualiza PDF"
+              />
+              <Button variant="contained" onClick={EnviarEmail}>
+                {loading && (
                   <Spinner
                     as="span"
                     animation="border"
@@ -667,7 +634,8 @@ function Home() {
                     aria-hidden="true"
                   />
                 )}
-                {textoBotao}</Button>
+                {textoBotao}
+              </Button>
             </div>
           </Form>
         </Paper>

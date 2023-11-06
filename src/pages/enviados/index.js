@@ -1,30 +1,15 @@
 import { useState, useEffect } from "react";
 import { db } from "../../firebaseConection";
 import "./index.css";
-import {
-  doc,
-  setDoc,
-  collection,
-  addDoc,
-  getDoc,
-  onSnapshot,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 //bootstrao
 import Container from "react-bootstrap/Container";
-import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
-import SendIcon from '@mui/icons-material/Send';
-import CancelScheduleSendIcon from '@mui/icons-material/CancelScheduleSend';
-import UnsubscribeIcon from '@mui/icons-material/Unsubscribe';
-import EmailIcon from '@mui/icons-material/Email';
-import Form from "react-bootstrap/Form";
-//import Button from "react-bootstrap/Button";
-import Spinner from "react-bootstrap/Spinner";
+import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
+import UnsubscribeIcon from "@mui/icons-material/Unsubscribe";
+import EmailIcon from "@mui/icons-material/Email";
+
 //toastify
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //mui
 import AppBar from "@mui/material/AppBar";
@@ -32,24 +17,13 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-import Divider from "@mui/material/Divider";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import FormGroup from "@mui/material/FormGroup";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import SettingsIcon from "@mui/icons-material/Settings";
-import Switch from "@mui/material/Switch";
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
-import Chip from '@mui/material/Chip';
-
-//import nodemailer from 'nodemailer';
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import { Button, CardActionArea, CardActions } from "@mui/material";
 
 function Home() {
   const [auth, setAuth] = useState(true);
@@ -62,23 +36,22 @@ function Home() {
     setAnchorEl(null);
   };
 
-  
   const navigate = useNavigate();
   const goEnviado = () => {
     navigate("/");
   };
 
-  function montaPDF(baseString){
+  function montaPDF(baseString) {
     const base64PDF = baseString;
     var byteCharacters = atob(base64PDF);
     var byteNumbers = new Array(byteCharacters.length);
     for (var i = 0; i < byteCharacters.length; i++) {
-    byteNumbers[i] = byteCharacters.charCodeAt(i);
-  }
-  var byteArray = new Uint8Array(byteNumbers);
-  var file = new Blob([byteArray], { type: 'application/pdf;base64' });
-  var fileURL = URL.createObjectURL(file);
-  window.open(fileURL);
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    var byteArray = new Uint8Array(byteNumbers);
+    var file = new Blob([byteArray], { type: "application/pdf;base64" });
+    var fileURL = URL.createObjectURL(file);
+    window.open(fileURL);
   }
 
   useEffect(() => {
@@ -108,14 +81,7 @@ function Home() {
             dataEnvio: doc.data().dataEnvio,
           });
         });
-        //ordena por sequencia
-        //lista2.sort(function (a, b) {
-        //  return b.dataEnvio < a.dataEnvio;
-        //});
-        //pega o jogo de maior sequencia
-        //const jogo = lista2[0];
         setListaEnviados(lista2);
-        //busca jogadores do ranking para adicionar no jogo posteriormente
       });
     }
     loadEnviados();
@@ -126,22 +92,11 @@ function Home() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            {/*
-                    <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>*/}
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Mudanças Mazutti
             </Typography>
             {auth && (
               <div>
-                
                 <IconButton
                   size="large"
                   aria-label="account of current user"
@@ -151,7 +106,6 @@ function Home() {
                   color="inherit"
                 >
                   <MenuIcon />
-                  
                 </IconButton>
                 <Menu
                   id="menu-appbar"
@@ -168,7 +122,6 @@ function Home() {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  
                   <MenuItem
                     onClick={() => {
                       goEnviado();
@@ -184,39 +137,42 @@ function Home() {
       </Box>
 
       <Container fluid="md" className="justify-content-md-center container">
-        
         <Paper elevation={0} className="paperModificado">
-        {listaEnviados.map((email) => {
-                  return (
-    <Card className="cardModificado">
-      <CardActionArea>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {email.nome}  {email.enviaEmail && (<EmailIcon/>)}{!email.enviaEmail && (<UnsubscribeIcon/>)}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Email : {email.email} enviado em {email.dataEnvio}
-          </Typography>
-          {/*<Typography variant="body2" color="text.secondary">Observação: {email.obs}</Typography>*/}
-          <Typography variant="body2" color="text.secondary">Origem: {email.origem} Destino : {email.destino}</Typography>
-          
-            
-            
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
-          <b>R$ {email.valor}</b>
-        </Button>
-        <Button size="small" color="error" onClick={()=>{montaPDF(email.base64PDF)}}>
-          <DownloadForOfflineIcon></DownloadForOfflineIcon>
-          <b> Baixar PDF</b>
-        </Button>
-      </CardActions>
-    </Card>
-                  );
-                })}
-
+          {listaEnviados.map((email) => {
+            return (
+              <Card className="cardModificado">
+                <CardActionArea>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {email.nome} {email.enviaEmail && <EmailIcon />}
+                      {!email.enviaEmail && <UnsubscribeIcon />}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Email : {email.email} enviado em {email.dataEnvio}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Origem: {email.origem} Destino : {email.destino}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions>
+                  <Button size="small" color="primary">
+                    <b>R$ {email.valor}</b>
+                  </Button>
+                  <Button
+                    size="small"
+                    color="error"
+                    onClick={() => {
+                      montaPDF(email.base64PDF);
+                    }}
+                  >
+                    <DownloadForOfflineIcon></DownloadForOfflineIcon>
+                    <b> Baixar PDF</b>
+                  </Button>
+                </CardActions>
+              </Card>
+            );
+          })}
         </Paper>
       </Container>
     </div>
