@@ -79,8 +79,13 @@ function Home() {
             cb9: doc.data().cb9,
             base64PDF: doc.data().base64PDF,
             dataEnvio: doc.data().dataEnvio,
+            dataEnvioConversao: new Date(doc.data().dataEnvioConversao),
           });
         });
+        lista2.sort(function(a,b) {
+          return a.dataEnvioConversao < b.dataEnvioConversao;
+        });
+
         setListaEnviados(lista2);
       });
     }
