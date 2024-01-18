@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./index.css";
 import Api from "../../Api";
 import { db } from "../../firebaseConection";
@@ -53,11 +53,13 @@ function Home() {
   const [checked8, setChecked8] = useState(false);
   const [checked9, setChecked9] = useState(false);
   const [auth, setAuth] = useState(true);
+  const[codigo, setCodigo] = useState();
 
   const navigate = useNavigate();
   const goEnviado = () => {
     navigate("/enviados");
   };
+ 
 
   const formatCurrency = (value, currency, localeString) => {
     const options = { style: "currency", currency };
@@ -362,7 +364,7 @@ function Home() {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Mudanças Mazutti
+              Mudanças Mazutti 
             </Typography>
             {auth && (
               <div>
