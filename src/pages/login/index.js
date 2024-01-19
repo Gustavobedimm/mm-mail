@@ -23,14 +23,6 @@ import "./index.css";
 
 function Home() {
   const [nome, setNome] = useState();
-  const [celular, setCelular] = useState();
-  const [telefone, setTelefone] = useState();
-  const [cnpj, setCnpj] = useState();
-  const [email, setEmail] = useState();
-  const [endereco, setEndereco] = useState();
-  const [estado, setEstado] = useState();
-  const [cidade, setCidade] = useState();
-  const [mensagem, setMensagem] = useState();
   const [codigo, setCodigo] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -44,16 +36,24 @@ function Home() {
     const postRef = doc(db, "empresas", codigo);
     await getDoc(postRef)
       .then((snapshot) => {
-        setNome(snapshot.data().nome);
-        setCelular(snapshot.data().celular);
-        setTelefone(snapshot.data().telefone);
-        setCnpj(snapshot.data().cnpj);
-        setEmail(snapshot.data().email);
-        setEndereco(snapshot.data().endereco);
-        setEstado(snapshot.data().estado);
-        setCidade(snapshot.data().cidade);
-        setMensagem(snapshot.data().mensagem);
-        setCodigo(snapshot.data().codigo);
+        const emp = {
+          nome: snapshot.data().nome,
+          codigo: codigo,
+          celular:snapshot.data().celular,
+          telefone:snapshot.data().telefone,
+          cnpj:snapshot.data().cnpj,
+          email:snapshot.data().email,
+          endereco:snapshot.data().endereco,
+          estado:snapshot.data().estado,
+          cidade:snapshot.data().cidade,
+          mensagem:snapshot.data().mensagem,
+          imagem:snapshot.data().imagem,
+          responsavel:snapshot.data().responsavel,
+          site:snapshot.data().site
+        }
+        var jsonAux = JSON.stringify(emp);
+        localStorage.setItem('empresa' , jsonAux);
+        
         goInicio();
       })
       .catch((error) => {
@@ -68,7 +68,7 @@ function Home() {
       <Container className="mt-5">
         <Card>
           <Card.Header>
-            <h5>Orçar Já - Orçamentos personalizados - Login {nome}</h5>
+            <h5>Orçar Já - Login {nome}</h5>
           </Card.Header>
           <Card.Body>
             <Form>

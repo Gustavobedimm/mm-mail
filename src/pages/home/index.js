@@ -29,6 +29,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Switch from "@mui/material/Switch";
+//import { Buffer } from 'buffer';
 
 function Home() {
   const [loading, setLoading] = useState(false);
@@ -53,13 +54,27 @@ function Home() {
   const [checked8, setChecked8] = useState(false);
   const [checked9, setChecked9] = useState(false);
   const [auth, setAuth] = useState(true);
-  const[codigo, setCodigo] = useState();
+
+  const [empresaNome, setEmpresaNome] = useState();
+  const [empresaCelular, setEmpresaCelular] = useState();
+  const [empresaTelefone, setEmpresaTelefone] = useState();
+  const [empresaCnpj, setEmpresaCnpj] = useState();
+  const [empresaEmail, setEmpresaEmail] = useState();
+  const [empresaEndereco, setEmpresaEndereco] = useState();
+  const [empresaEstado, setEmpresaEstado] = useState();
+  const [empresaCidade, setEmpresaCidade] = useState();
+  const [empresaMensagem, setEmpresaMensagem] = useState();
+  const [empresaCodigo, setEmpresaCodigo] = useState();
+  const [empresaImagem, setEmpresaImagem] = useState();
+  const [empresaResponsavel, setEmpresaResponsavel] = useState();
+  const [empresaSite, setEmpresaSite] = useState();
+
+  const [myBase64,setMyBase64] = useState();
 
   const navigate = useNavigate();
   const goEnviado = () => {
     navigate("/enviados");
   };
- 
 
   const formatCurrency = (value, currency, localeString) => {
     const options = { style: "currency", currency };
@@ -74,6 +89,29 @@ function Home() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {
+    if (localStorage.getItem("empresa") === null) {
+      navigate("/");
+    }else{
+    var empresaJson = localStorage.getItem('empresa');
+    const emp = JSON.parse(empresaJson);
+    setEmpresaNome(emp.nome);
+    setEmpresaCelular(emp.celular);
+    setEmpresaTelefone(emp.telefone);
+    setEmpresaCnpj(emp.cnpj);
+    setEmpresaEmail(emp.email);
+    setEmpresaEndereco(emp.endereco);
+    setEmpresaEstado(emp.estado);
+    setEmpresaCidade(emp.cidade);
+    setEmpresaMensagem(emp.mensagem);
+    setEmpresaCodigo(emp.codigo);
+    setEmpresaImagem(emp.imagem);
+    setEmpresaResponsavel(emp.responsavel);
+    setEmpresaSite(emp.site);
+  }
+  }, []);
+
+
   //PDF
   function ativaVisualizacao() {
     if (preVisualiza === false) {
@@ -139,6 +177,8 @@ function Home() {
       base64PDF: base64PDF,
       dataEnvio: StringdataAtual,
       dataEnvioConversao: dataConversao,
+      empresaCodigo:empresaCodigo
+      
     })
       .then(() => {
         console.log("gravado no banco");
@@ -231,6 +271,21 @@ function Home() {
     setValor("");
     setObs("");
   }
+ // function toDataUrl(url, callback) {
+ //   var xhr = new XMLHttpRequest();
+ //   xhr.onload = function() {
+ //       var reader = new FileReader();
+ //       reader.onloadend = function() {
+ //           callback(reader.result);
+ //       }
+ //       reader.readAsDataURL(xhr.response);
+ //   };
+ //   xhr.open('GET', url);
+ //   xhr.responseType = 'blob';
+ //   xhr.send();
+ // }
+ 
+  
 
   async function EnviarEmail() {
     if (email.length < 1) {
@@ -298,6 +353,14 @@ function Home() {
       });
       return;
     }
+    
+    //toDataUrl(empresaImagem, function(myBase64Par) {
+    //const buf = Buffer.from(myBase64Par, 'base64');
+    //setMyBase64(buf);
+    //console.log(myBase64Par);
+    //console.log(buf);
+    
+  //});
 
     setLoading(true);
     setTextoBotao("Enviando E-mail");
@@ -320,6 +383,20 @@ function Home() {
       cb7: checked7,
       cb8: checked8,
       cb9: checked9,
+      empresaNome:empresaNome,
+      empresaCelular:empresaCelular,
+      empresaTelefone:empresaTelefone,
+      empresaCnpj:empresaCnpj,
+      empresaEmail:empresaEmail,
+      empresaEndereco:empresaEndereco,
+      empresaEstado:empresaEstado, 
+      empresaCidade:empresaCidade, 
+      empresaMensagem:empresaMensagem,
+      empresaCodigo:empresaCodigo, 
+      empresaImagem:empresaImagem,
+      empresaResponsavel:empresaResponsavel,
+      empresaSite:empresaSite
+      //imagemBase64:myBase64
     };
 
     await Api.post("/send-mail", data, {
@@ -364,7 +441,7 @@ function Home() {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Mudanças Mazutti 
+              {empresaNome} 
             </Typography>
             {auth && (
               <div>
