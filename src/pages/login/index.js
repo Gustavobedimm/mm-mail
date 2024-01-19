@@ -1,6 +1,18 @@
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from "react";
 //bootstrao
-import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "@mui/material/Button";
@@ -21,7 +33,33 @@ import {
 
 import "./index.css";
 
-function Home() {
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Orçamentos Online
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+// TODO remove, this demo shouldn't need to reset the theme.
+
+const defaultTheme = createTheme();
+
+export default function SignIn() {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+  };
+
   const [nome, setNome] = useState();
   const [codigo, setCodigo] = useState();
   const [loading, setLoading] = useState(false);
@@ -64,21 +102,48 @@ function Home() {
   }
 
   return (
-    <div className="App">
-      <Container className="mt-5">
-        <Card>
-          <Card.Header>
-            <h5>Orçar Já - Login {nome}</h5>
-          </Card.Header>
-          <Card.Body>
-            <Form>
-              <Form.Group className="mb-3">
-                <Form.Label>Informe o código da sua empresa</Form.Label>
-                <Form.Control type="password" placeholder="Código" onChange={(e) => setCodigo(e.target.value)}/>
-              </Form.Group>
-              <div className="d-grid gap-2">
-                <Button variant="contained" onClick={buscarEmpresa}>
-                  {loading && (
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Entrar
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="código"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={(e) => setCodigo(e.target.value)}
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Lembrar de mim"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={buscarEmpresa}
+            >
+                {loading && (
                     <Spinner
                       as="span"
                       animation="border"
@@ -87,15 +152,13 @@ function Home() {
                       aria-hidden="true"
                     />
                   )}
-                  Entrar
-                </Button>
-              </div>
-            </Form>
-          </Card.Body>
-        </Card>
+              Entrar
+            </Button>
+            
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-    </div>
+    </ThemeProvider>
   );
 }
-
-export default Home;
