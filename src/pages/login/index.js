@@ -32,6 +32,7 @@ import {
 } from "firebase/firestore";
 
 import "./index.css";
+import { MotionConfigContext } from 'framer-motion';
 
 function Copyright(props) {
   return (
@@ -71,6 +72,7 @@ export default function SignIn() {
 
   async function buscarEmpresa() {
     setLoading(true);
+    
     const postRef = doc(db, "empresas", codigo);
     await getDoc(postRef)
       .then((snapshot) => {

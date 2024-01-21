@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { db } from "../../firebaseConection";
 import "./index.css";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, doc} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-//bootstrao
+//bootstraoz
 import Container from "react-bootstrap/Container";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 import UnsubscribeIcon from "@mui/icons-material/Unsubscribe";
@@ -38,7 +38,7 @@ function Home() {
 
   const navigate = useNavigate();
   const goEnviado = () => {
-    navigate("/");
+    navigate("/inicio");
   };
 
   function montaPDF(baseString) {

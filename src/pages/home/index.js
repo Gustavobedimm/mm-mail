@@ -75,6 +75,11 @@ function Home() {
   const goEnviado = () => {
     navigate("/enviados");
   };
+  
+  const goSair = () => {
+    localStorage.removeItem("empresa");
+    navigate("/");
+  };
 
   const formatCurrency = (value, currency, localeString) => {
     const options = { style: "currency", currency };
@@ -483,6 +488,13 @@ function Home() {
                     }}
                   >
                     E-Mails Enviados
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      goSair();
+                    }}
+                  >
+                    Sair
                   </MenuItem>
                 </Menu>
               </div>
