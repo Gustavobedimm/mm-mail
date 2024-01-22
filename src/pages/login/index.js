@@ -1,16 +1,17 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import { ToastContainer, toast } from "react-toastify";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 //bootstrao
 import Card from "react-bootstrap/Card";
@@ -32,17 +33,21 @@ import {
 } from "firebase/firestore";
 
 import "./index.css";
-import { MotionConfigContext } from 'framer-motion';
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Orçamentos Online
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -56,8 +61,8 @@ export default function SignIn() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      email: data.get("email"),
+      password: data.get("password"),
     });
   };
 
@@ -72,67 +77,107 @@ export default function SignIn() {
 
   async function buscarEmpresa() {
     setLoading(true);
-    
-    const postRef = doc(db, "empresas", codigo);
-    await getDoc(postRef)
-      .then((snapshot) => {
-        const emp = {
-          nome: snapshot.data().nome,
-          codigo: codigo,
-          celular:snapshot.data().celular,
-          telefone:snapshot.data().telefone,
-          cnpj:snapshot.data().cnpj,
-          email:snapshot.data().email,
-          endereco:snapshot.data().endereco,
-          estado:snapshot.data().estado,
-          cidade:snapshot.data().cidade,
-          mensagem:snapshot.data().mensagem,
-          imagem:snapshot.data().imagem,
-          responsavel:snapshot.data().responsavel,
-          site:snapshot.data().site
-        }
-        var jsonAux = JSON.stringify(emp);
-        localStorage.setItem('empresa' , jsonAux);
-        
-        goInicio();
-      })
-      .catch((error) => {
-        setNome("Empresa não encontrada.");
-        console.log("Erro ao buscar post" + error);
+    var erro = false;
+    if (!codigo) {
+      erro = true;
+      setCodigo("");
+      setLoading(false);
+    } else {
+      const codigoTMP = codigo.trim();
+      if (codigoTMP.length === 0) {
+        erro = true;
+        setCodigo("");
+        setLoading(false);
+      }
+    }
+    if (erro) {
+      toast.error("Informe o código da empresa.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
       });
-    setLoading(false);
+    } else {
+      const postRef = doc(db, "empresas", codigo);
+      await getDoc(postRef)
+        .then((snapshot) => {
+          const emp = {
+            nome: snapshot.data().nome,
+            codigo: codigo,
+            celular: snapshot.data().celular,
+            telefone: snapshot.data().telefone,
+            cnpj: snapshot.data().cnpj,
+            email: snapshot.data().email,
+            endereco: snapshot.data().endereco,
+            estado: snapshot.data().estado,
+            cidade: snapshot.data().cidade,
+            mensagem: snapshot.data().mensagem,
+            imagem: snapshot.data().imagem,
+            responsavel: snapshot.data().responsavel,
+            site: snapshot.data().site,
+          };
+          var jsonAux = JSON.stringify(emp);
+          localStorage.setItem("empresa", jsonAux);
+
+          goInicio();
+        })
+        .catch((error) => {
+          toast.error("Empresa não encontrada.", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        });
+      setLoading(false);
+    }
   }
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
+        <ToastContainer />
         <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Entrar
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
               fullWidth
               name="password"
               label="código"
+              pattern="\d*"
               type="password"
               id="password"
               autoComplete="current-password"
               onChange={(e) => setCodigo(e.target.value)}
+              autoFocus
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -145,18 +190,17 @@ export default function SignIn() {
               sx={{ mt: 3, mb: 2 }}
               onClick={buscarEmpresa}
             >
-                {loading && (
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                  )}
+              {loading && (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              )}
               Entrar
             </Button>
-            
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />

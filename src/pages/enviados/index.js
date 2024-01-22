@@ -29,11 +29,28 @@ function Home() {
   const [auth, setAuth] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
   const [listaEnviados, setListaEnviados] = useState([]);
+  const [empresaNome, setEmpresaNome] = useState();
+  const [empresaCelular, setEmpresaCelular] = useState();
+  const [empresaTelefone, setEmpresaTelefone] = useState();
+  const [empresaCnpj, setEmpresaCnpj] = useState();
+  const [empresaEmail, setEmpresaEmail] = useState();
+  const [empresaEndereco, setEmpresaEndereco] = useState();
+  const [empresaEstado, setEmpresaEstado] = useState();
+  const [empresaCidade, setEmpresaCidade] = useState();
+  const [empresaMensagem, setEmpresaMensagem] = useState();
+  const [empresaCodigo, setEmpresaCodigo] = useState();
+  const [empresaImagem, setEmpresaImagem] = useState();
+  const [empresaResponsavel, setEmpresaResponsavel] = useState();
+  const [empresaSite, setEmpresaSite] = useState();
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const goSair = () => {
+    localStorage.removeItem("empresa");
+    navigate("/");
   };
 
   const navigate = useNavigate();
@@ -55,6 +72,25 @@ function Home() {
   }
 
   useEffect(() => {
+    if (localStorage.getItem("empresa") === null) {
+      navigate("/");
+    }else{
+    var empresaJson = localStorage.getItem('empresa');
+    const emp = JSON.parse(empresaJson);
+    setEmpresaNome(emp.nome);
+    setEmpresaCelular(emp.celular);
+    setEmpresaTelefone(emp.telefone);
+    setEmpresaCnpj(emp.cnpj);
+    setEmpresaEmail(emp.email);
+    setEmpresaEndereco(emp.endereco);
+    setEmpresaEstado(emp.estado);
+    setEmpresaCidade(emp.cidade);
+    setEmpresaMensagem(emp.mensagem);
+    setEmpresaCodigo(emp.codigo);
+    setEmpresaImagem(emp.imagem);
+    setEmpresaResponsavel(emp.responsavel);
+    setEmpresaSite(emp.site);
+  }
     async function loadEnviados() {
       const unsub = onSnapshot(collection(db, "emailmm"), (snapshot2) => {
         let lista2 = [];
@@ -98,7 +134,7 @@ function Home() {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Mudanças Mazutti
+            {empresaNome} 
             </Typography>
             {auth && (
               <div>
@@ -133,6 +169,13 @@ function Home() {
                     }}
                   >
                     Enviar orçamento
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      goSair();
+                    }}
+                  >
+                    Sair
                   </MenuItem>
                 </Menu>
               </div>
