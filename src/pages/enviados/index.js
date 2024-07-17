@@ -96,6 +96,7 @@ function Home() {
         let lista2 = [];
         snapshot2.forEach((doc) => {
           lista2.push({
+            id: doc.data().id,
             nome: doc.data().nome,
             doc: doc.data().doc,
             email: doc.data().email,
