@@ -370,6 +370,20 @@ function Home() {
     setLoading(true);
     setTextoBotao("Enviando E-mail");
 
+    const base64 = await fetch('https://scontent-gru2-1.cdninstagram.com/v/t51.2885-19/296477577_428755949187751_5501916957594122246_n.jpg?stp=dst-jpg_s320x320&_nc_ht=scontent-gru2-1.cdninstagram.com&_nc_cat=107&_nc_ohc=6pgBUqRlz_wQ7kNvgFSP6lU&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AYAoTBd6x02wN-amkJhW9FPdHFJKg7CZ9cQekbT6oBLMdg&oe=669D8186&_nc_sid=8b3546')
+  .then(response => response.blob())
+  .then(blob => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    return new Promise((res) => {
+      reader.onloadend = () => {
+      res(reader.result);
+    }})
+  })
+  console.log(base64);
+
+   
+
     const data = {
       nome: nome,
       doc: cpf,
@@ -400,8 +414,8 @@ function Home() {
       empresaCodigo:empresaCodigo, 
       empresaImagem:empresaImagem,
       empresaResponsavel:empresaResponsavel,
-      empresaSite:empresaSite
-      //imagemBase64:myBase64
+      empresaSite:empresaSite,
+      imagemBase64:base64
     };
 
     await Api.post("/send-mail", data, {
