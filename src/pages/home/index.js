@@ -276,21 +276,6 @@ function Home() {
     setValor("");
     setObs("");
   }
- // function toDataUrl(url, callback) {
- //   var xhr = new XMLHttpRequest();
- //   xhr.onload = function() {
- //       var reader = new FileReader();
- //       reader.onloadend = function() {
- //           callback(reader.result);
- //       }
- //       reader.readAsDataURL(xhr.response);
- //   };
- //   xhr.open('GET', url);
- //   xhr.responseType = 'blob';
- //   xhr.send();
- // }
- 
-  
 
   async function EnviarEmail() {
     if (email.length < 1) {
@@ -359,30 +344,9 @@ function Home() {
       return;
     }
     
-    //toDataUrl(empresaImagem, function(myBase64Par) {
-    //const buf = Buffer.from(myBase64Par, 'base64');
-    //setMyBase64(buf);
-    //console.log(myBase64Par);
-    //console.log(buf);
-    
-  //});
-
     setLoading(true);
     setTextoBotao("Enviando E-mail");
 
-    const base64 = await fetch('https://scontent-gru2-1.cdninstagram.com/v/t51.2885-19/296477577_428755949187751_5501916957594122246_n.jpg?stp=dst-jpg_s320x320&_nc_ht=scontent-gru2-1.cdninstagram.com&_nc_cat=107&_nc_ohc=6pgBUqRlz_wQ7kNvgFSP6lU&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AYAoTBd6x02wN-amkJhW9FPdHFJKg7CZ9cQekbT6oBLMdg&oe=669D8186&_nc_sid=8b3546')
-  .then(response => response.blob())
-  .then(blob => {
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-    return new Promise((res) => {
-      reader.onloadend = () => {
-      res(reader.result);
-    }})
-  })
-  console.log(base64);
-
-   
 
     const data = {
       nome: nome,
