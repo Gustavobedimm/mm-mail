@@ -276,6 +276,21 @@ function Home() {
     setValor("");
     setObs("");
   }
+ // function toDataUrl(url, callback) {
+ //   var xhr = new XMLHttpRequest();
+ //   xhr.onload = function() {
+ //       var reader = new FileReader();
+ //       reader.onloadend = function() {
+ //           callback(reader.result);
+ //       }
+ //       reader.readAsDataURL(xhr.response);
+ //   };
+ //   xhr.open('GET', url);
+ //   xhr.responseType = 'blob';
+ //   xhr.send();
+ // }
+ 
+  
 
   async function EnviarEmail() {
     if (email.length < 1) {
@@ -344,9 +359,16 @@ function Home() {
       return;
     }
     
+    //toDataUrl(empresaImagem, function(myBase64Par) {
+    //const buf = Buffer.from(myBase64Par, 'base64');
+    //setMyBase64(buf);
+    //console.log(myBase64Par);
+    //console.log(buf);
+    
+  //});
+
     setLoading(true);
     setTextoBotao("Enviando E-mail");
-
 
     const data = {
       nome: nome,
@@ -378,8 +400,8 @@ function Home() {
       empresaCodigo:empresaCodigo, 
       empresaImagem:empresaImagem,
       empresaResponsavel:empresaResponsavel,
-      empresaSite:empresaSite,
-      imagemBase64:base64
+      empresaSite:empresaSite
+      //imagemBase64:myBase64
     };
 
     await Api.post("/send-mail", data, {
