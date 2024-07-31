@@ -3,6 +3,7 @@ import { db } from "../../firebaseConection";
 import "./index.css";
 import { collection, onSnapshot, doc} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+
 //bootstraoz
 import Container from "react-bootstrap/Container";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
@@ -32,6 +33,19 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+
+import Dialog from '@mui/material/Dialog';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemButton from '@mui/material/ListItemButton';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+
+
+
+
+import CloseIcon from '@mui/icons-material/Close';
+import Slide from '@mui/material/Slide';
 
 
 function Home() {
@@ -51,6 +65,36 @@ function Home() {
   const [empresaImagem, setEmpresaImagem] = useState();
   const [empresaResponsavel, setEmpresaResponsavel] = useState();
   const [empresaSite, setEmpresaSite] = useState();
+
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [origem, setOrigem] = useState("");
+  const [destino, setDestino] = useState("");
+  const [valor, setValor] = useState("");
+  const [base64, setBase64] = useState("");
+  const [dataEnvio, setDataEnvio] = useState("");
+  const [obs, setObs] = useState("");
+  
+
+    const [open, setOpen] = useState(false);
+  
+    const handleClickOpen = (email) => {
+      setNome(email.nome);
+      setEmail(email.email);
+      setOrigem(email.origem);
+      setDestino(email.destino);
+      setValor(email.valor);
+      setBase64(email.base64PDF);
+      setDataEnvio(email.dataEnvio);
+      setObs(email.obs);
+      
+      setOpen(true);
+    };
+  
+    const handleClickClose = () => {
+      setOpen(false);
+    };
+  
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -252,7 +296,7 @@ function Home() {
           <TableRow>
             <TableCell>Cliente</TableCell>
             <TableCell align="left">Valor</TableCell>
-            <TableCell align="left">PDF</TableCell>
+            <TableCell align="left">Abrir</TableCell>
             
           </TableRow>
         </TableHead>
@@ -262,9 +306,9 @@ function Home() {
             <TableRow key={email.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell component="th" scope="row">{email.nome}</TableCell>
               <TableCell align="left">{email.valor}</TableCell>
-              <TableCell align="left" ><PictureAsPdfIcon  onClick={() => {
-                      montaPDF(email.base64PDF);
-                    }}/></TableCell>
+              <TableCell align="left" ><OpenInNewIcon  onClick={() => {
+                  handleClickOpen(email);
+                }}/></TableCell>
               
             </TableRow>
             )
@@ -278,10 +322,83 @@ function Home() {
           
         </Paper>
 
+        <>
+      
+      <Dialog
+        fullScreen
+        open={open}
+        onClose={handleClickClose}
         
+      >
+        <AppBar sx={{ position: 'relative' }}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleClickClose}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+              Orçamento
+            </Typography>
+            <Button autoFocus color="inherit" onClick={() => {
+                      montaPDF(base64);
+                    }}>
+              Baixar PDF
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <List>
+          <ListItemButton>
+            <ListItemText primary={nome} secondary={email} />
+          </ListItemButton>
+          <Divider />
+          <ListItemButton>
+            <ListItemText
+              primary="Origem"
+              secondary={origem} 
+            />
+          </ListItemButton>
+          <Divider />
+          <ListItemButton>
+            <ListItemText
+              primary="Destino"
+              secondary={destino} 
+            />
+          </ListItemButton>
+          <Divider />
+          <ListItemButton>
+            <ListItemText
+              primary="Valor do orçamento"
+              secondary={valor} 
+            />
+          </ListItemButton>
+          <Divider />
+          <ListItemButton>
+            <ListItemText
+              primary="Data Envio"
+              secondary={dataEnvio} 
+            />
+          </ListItemButton>
+          <Divider />
+          <ListItemButton>
+            <ListItemText
+              primary="Observação"
+              secondary={obs} 
+            />
+          </ListItemButton>
+          
+        </List>
+      </Dialog>
+    </>
 
       </Container>
+      
     </div>
+    
+    
   );
 }
 
