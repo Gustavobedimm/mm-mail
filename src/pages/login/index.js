@@ -44,7 +44,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Orçamentos Online
+      Material Design
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -72,7 +72,7 @@ export default function SignIn() {
 
   const navigate = useNavigate();
   const goInicio = () => {
-    navigate("/inicio");
+    navigate("/menu");
   };
 
   async function buscarEmpresa() {
@@ -148,17 +148,17 @@ export default function SignIn() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 30,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          {/*<Avatar sx={{ m: 1, bgcolor: "black" }}>
             <LockOutlinedIcon />
-          </Avatar>
+          </Avatar>*/}
           <Typography component="h1" variant="h5">
-            Entrar
+            Bem-vindo de volta!
           </Typography>
           <Box
             component="form"
@@ -179,16 +179,17 @@ export default function SignIn() {
               onChange={(e) => setCodigo(e.target.value)}
               autoFocus
             />
-            <FormControlLabel
+            {/*<FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Lembrar de mim"
-            />
+            />*/}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               onClick={buscarEmpresa}
+              
             >
               {loading && (
                 <Spinner

@@ -80,6 +80,10 @@ function Home() {
     localStorage.removeItem("empresa");
     navigate("/");
   };
+  const goMenu = () => {
+     navigate("/menu");
+  };
+
 
   const formatCurrency = (value, currency, localeString) => {
     const options = { style: "currency", currency };
@@ -474,7 +478,13 @@ function Home() {
                   }}
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
-                >
+                ><MenuItem
+                onClick={() => {
+                  goMenu();
+                }}
+              >
+                Voltar para o Menu
+              </MenuItem>
                   <MenuItem
                     onClick={() => {
                       limpaCampos();
@@ -718,7 +728,7 @@ function Home() {
                 }
                 label="Visualiza PDF"
               />
-              <Button variant="contained" onClick={EnviarEmail}>
+              <Button variant="contained" onClick={EnviarEmail} sx={{mt: 1,mb: 3 }}>
                 {loading && (
                   <Spinner
                     as="span"

@@ -24,6 +24,14 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions } from "@mui/material";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+
 
 function Home() {
   const [auth, setAuth] = useState(true);
@@ -56,6 +64,9 @@ function Home() {
   const navigate = useNavigate();
   const goEnviado = () => {
     navigate("/inicio");
+  };
+  const goMenu = () => {
+    navigate("/menu");
   };
 
   function montaPDF(baseString) {
@@ -166,6 +177,13 @@ function Home() {
                 >
                   <MenuItem
                     onClick={() => {
+                      goMenu();
+                    }}
+                  >
+                    Volta ao Menu
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
                       goEnviado();
                     }}
                   >
@@ -187,7 +205,7 @@ function Home() {
 
       <Container fluid="md" className="justify-content-md-center container">
         <Paper elevation={0} className="paperModificado">
-          {listaEnviados.map((email) => {
+          {/*{listaEnviados.map((email) => {
             return (
               <Card className="cardModificado">
                 <CardActionArea>
@@ -221,8 +239,41 @@ function Home() {
                 </CardActions>
               </Card>
             );
+          })}*/}
+          <TableContainer component={Paper}>
+      <Table  size="small" aria-label="a dense table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Cliente</TableCell>
+            <TableCell align="left">Valor</TableCell>
+            <TableCell align="left">PDF</TableCell>
+            
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {listaEnviados.map((email) => {
+            return (
+            <TableRow key={email.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableCell component="th" scope="row">{email.nome}</TableCell>
+              <TableCell align="left">{email.valor}</TableCell>
+              <TableCell align="left" ><PictureAsPdfIcon  onClick={() => {
+                      montaPDF(email.base64PDF);
+                    }}/></TableCell>
+              
+            </TableRow>
+            )
           })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+
+
+
+          
         </Paper>
+
+        
+
       </Container>
     </div>
   );
