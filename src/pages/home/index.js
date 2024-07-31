@@ -29,6 +29,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Switch from "@mui/material/Switch";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 //import { Buffer } from 'buffer';
 
 function Home() {
@@ -449,6 +450,11 @@ function Home() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }} onClick={() => {
+                  goMenu();
+                }}>
+      <ArrowBackIcon />
+    </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               {empresaNome} 
             </Typography>

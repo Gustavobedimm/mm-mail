@@ -31,6 +31,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 function Home() {
@@ -145,6 +146,11 @@ function Home() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }} onClick={() => {
+                  goMenu();
+                }}>
+      <ArrowBackIcon />
+    </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {empresaNome} 
             </Typography>

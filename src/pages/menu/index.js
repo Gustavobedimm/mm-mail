@@ -27,6 +27,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
+
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import Switch from "@mui/material/Switch";
@@ -40,6 +41,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import SendIcon from '@mui/icons-material/Send';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 
 //import { Buffer } from 'buffer';
@@ -71,6 +75,9 @@ function Home() {
   };
   const goEnviados = () => {
     navigate("/enviados");
+  };
+  const goPerfil = () => {
+    navigate("/perfil");
   };
 
   //App BAR
@@ -108,6 +115,7 @@ function Home() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
+          
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               {empresaNome}
             </Typography>
@@ -193,26 +201,26 @@ function Home() {
         <ListItemIcon>
           <SendIcon />
         </ListItemIcon>
-        <ListItemText primary="Enviar novo E-mail" />
+        <ListItemText primary="Novo orçamento" />
       </ListItemButton>
       <Divider />
       <ListItemButton onClick={() => {goEnviados();}}> 
         <ListItemIcon>
-          <DraftsIcon />
+          <FormatListBulletedIcon />
         </ListItemIcon>
-        <ListItemText primary="Listagem de E-mails enviados" />
+        <ListItemText primary="Listagem de orçamentos" />
       </ListItemButton>
       <Divider />
-      <ListItemButton>
+      <ListItemButton onClick={() => {goPerfil();}}>
         <ListItemIcon>
-          <DraftsIcon />
+          <AccountCircleIcon />
         </ListItemIcon>
         <ListItemText primary="Meus Dados" />
       </ListItemButton>
       <Divider />
       <ListItemButton onClick={() => {goSair();}}>
         <ListItemIcon>
-          <DraftsIcon />
+          <LogoutIcon />
         </ListItemIcon>
         <ListItemText primary="Sair" />
       </ListItemButton>

@@ -3,6 +3,7 @@ import Home from '../pages/home';
 import Login from '../pages/login';
 import Enviados from '../pages/enviados'
 import Menu from '../pages/menu'
+import Perfil from '../pages/perfil'
 function RoutesApp() {
   return (
     <Routes>
@@ -10,6 +11,7 @@ function RoutesApp() {
       <Route path="/inicio" element={<Home />} />
       <Route path="/menu" element={<Menu />} />
       <Route path="/enviados" element={<Enviados />} />
+      <Route path="/perfil" element={<Perfil />} />
     </Routes>
   );
 }
