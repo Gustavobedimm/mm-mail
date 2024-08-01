@@ -264,22 +264,22 @@ function Home() {
 
   function limpaCampos() {
     handleClose();
-    setChecked1(false);
-    setChecked2(false);
-    setChecked3(false);
-    setChecked4(false);
-    setChecked5(false);
-    setChecked6(false);
-    setChecked7(false);
-    setChecked8(false);
-    setChecked9(false);
-    setNome("");
-    setCpf("");
-    setEmail("");
-    setOrigem("CASCAVEL-PR");
-    setDestino("CASCAVEL-PR");
-    setValor("");
-    setObs("");
+    //setChecked1(false);
+    //setChecked2(false);
+    //setChecked3(false);
+    //setChecked4(false);
+    //setChecked5(false);
+    //setChecked6(false);
+    //setChecked7(false);
+    //setChecked8(false);
+    //setChecked9(false);
+    //setNome("");
+    //setCpf("");
+    //setEmail("");
+    //setOrigem("CASCAVEL-PR");
+    //setDestino("CASCAVEL-PR");
+    //setValor("");
+    //setObs("");
   }
  // function toDataUrl(url, callback) {
  //   var xhr = new XMLHttpRequest();
