@@ -6,8 +6,7 @@ import { collection, addDoc } from "firebase/firestore";
 //bootstrao
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
-//import Button from "react-bootstrap/Button";
-import Spinner from "react-bootstrap/Spinner";
+
 //toastify
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,23 +19,17 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
-import Divider from "@mui/material/Divider";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import FormGroup from "@mui/material/FormGroup";
 import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import Switch from "@mui/material/Switch";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-//import { Buffer } from 'buffer';
+
 
 function Home() {
   const [loading, setLoading] = useState(false);
-
   const [auth, setAuth] = useState(true);
-
+  //dados da empresa
   const [empresaNome, setEmpresaNome] = useState();
   const [empresaCelular, setEmpresaCelular] = useState();
   const [empresaTelefone, setEmpresaTelefone] = useState();
@@ -51,13 +44,8 @@ function Home() {
   const [empresaResponsavel, setEmpresaResponsavel] = useState();
   const [empresaSite, setEmpresaSite] = useState();
 
-  const [myBase64,setMyBase64] = useState();
-
   const navigate = useNavigate();
-  const goEnviado = () => {
-    navigate("/enviados");
-  };
-  
+ 
   const goSair = () => {
     localStorage.removeItem("empresa");
     navigate("/");
@@ -74,6 +62,8 @@ function Home() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+
   useEffect(() => {
     if (localStorage.getItem("empresa") === null) {
       navigate("/");
@@ -262,6 +252,8 @@ function Home() {
                 fullWidth
                 label="URL Imagem Logo"
                 id="cliente"
+                value={empresaImagem}
+                onChange={(e) => setEmpresaImagem(e.target.value)}
                 autoFocus
               />
             </Box>

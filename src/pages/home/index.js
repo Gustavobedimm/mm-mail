@@ -699,6 +699,7 @@ function Home() {
               <TextField
                 fullWidth
                 label="Valor"
+                pattern="\d*"
                 id="origem"
                 value={valor}
                 onChange={(e) => formatCurrency(e.target.value, "BRL", "pt-BR")}

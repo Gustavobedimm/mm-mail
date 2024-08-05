@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { db } from "../../firebaseConection";
 import "./index.css";
-import { collection, onSnapshot, doc} from "firebase/firestore";
+import { collection, onSnapshot, doc,query, where, getDocs} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 //bootstraoz
@@ -61,7 +61,7 @@ function Home() {
   const [empresaEstado, setEmpresaEstado] = useState();
   const [empresaCidade, setEmpresaCidade] = useState();
   const [empresaMensagem, setEmpresaMensagem] = useState();
-  const [empresaCodigo, setEmpresaCodigo] = useState();
+  const [empresaCodigo, setEmpresaCodigo] = useState("0000");
   const [empresaImagem, setEmpresaImagem] = useState();
   const [empresaResponsavel, setEmpresaResponsavel] = useState();
   const [empresaSite, setEmpresaSite] = useState();
@@ -126,6 +126,45 @@ function Home() {
     var fileURL = URL.createObjectURL(file);
     window.open(fileURL);
   }
+  async function loadEnviados(codigo) {
+    const q = query(collection(db, "emailmm"), where("empresaCodigo", "==", codigo));
+    const querySnapshot = await getDocs(q);
+    //onSnapshot é para dados em tempo real
+    //const unsub = onSnapshot(collection(db, "emailmm"), (snapshot2) => {
+      let lista2 = [];
+      //snapshot2.forEach((doc) => {
+        querySnapshot.forEach((doc) => {
+        lista2.push({
+          id: doc.data().id,
+          nome: doc.data().nome,
+          doc: doc.data().doc,
+          email: doc.data().email,
+          origem: doc.data().origem,
+          destino: doc.data().destino,
+          valor: doc.data().valor,
+          enviaEmail: doc.data().enviaEmail,
+          obs: doc.data().obs,
+          cb1: doc.data().cb1,
+          cb2: doc.data().cb2,
+          cb3: doc.data().cb3,
+          cb4: doc.data().cb4,
+          cb5: doc.data().cb5,
+          cb6: doc.data().cb6,
+          cb7: doc.data().cb7,
+          cb8: doc.data().cb8,
+          cb9: doc.data().cb9,
+          base64PDF: doc.data().base64PDF,
+          dataEnvio: doc.data().dataEnvio,
+          dataEnvioConversao: new Date(doc.data().dataEnvioConversao),
+        });
+      });
+      lista2.sort(function(a,b) {
+        return a.dataEnvioConversao < b.dataEnvioConversao;
+      });
+
+      setListaEnviados(lista2);
+    //});
+  }
 
   useEffect(() => {
     if (localStorage.getItem("empresa") === null) {
@@ -146,43 +185,8 @@ function Home() {
     setEmpresaImagem(emp.imagem);
     setEmpresaResponsavel(emp.responsavel);
     setEmpresaSite(emp.site);
+    loadEnviados(emp.codigo);
   }
-    async function loadEnviados() {
-      const unsub = onSnapshot(collection(db, "emailmm"), (snapshot2) => {
-        let lista2 = [];
-        snapshot2.forEach((doc) => {
-          lista2.push({
-            id: doc.data().id,
-            nome: doc.data().nome,
-            doc: doc.data().doc,
-            email: doc.data().email,
-            origem: doc.data().origem,
-            destino: doc.data().destino,
-            valor: doc.data().valor,
-            enviaEmail: doc.data().enviaEmail,
-            obs: doc.data().obs,
-            cb1: doc.data().cb1,
-            cb2: doc.data().cb2,
-            cb3: doc.data().cb3,
-            cb4: doc.data().cb4,
-            cb5: doc.data().cb5,
-            cb6: doc.data().cb6,
-            cb7: doc.data().cb7,
-            cb8: doc.data().cb8,
-            cb9: doc.data().cb9,
-            base64PDF: doc.data().base64PDF,
-            dataEnvio: doc.data().dataEnvio,
-            dataEnvioConversao: new Date(doc.data().dataEnvioConversao),
-          });
-        });
-        lista2.sort(function(a,b) {
-          return a.dataEnvioConversao < b.dataEnvioConversao;
-        });
-
-        setListaEnviados(lista2);
-      });
-    }
-    loadEnviados();
   }, []);
 
   return (
