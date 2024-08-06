@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import "./index.css";
-import Api from "../../Api";
 import { db } from "../../firebaseConection";
-import { collection, addDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 //bootstrao
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -27,7 +26,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 function Home() {
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
   const [auth, setAuth] = useState(true);
   //dados da empresa
   const [empresaNome, setEmpresaNome] = useState();
@@ -42,8 +41,7 @@ function Home() {
   const [empresaCodigo, setEmpresaCodigo] = useState();
   const [empresaImagem, setEmpresaImagem] = useState();
   const [empresaResponsavel, setEmpresaResponsavel] = useState();
-  const [empresaSite, setEmpresaSite] = useState();
-
+  
   const navigate = useNavigate();
  
   const goSair = () => {
@@ -62,6 +60,63 @@ function Home() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  async function alterarEmpresa(){
+    const docRef = doc(db, "empresas" , empresaCodigo);
+    await updateDoc(docRef, {
+      nome : empresaNome,
+      email : empresaEmail,
+      cnpj : empresaCnpj,
+      cidade : empresaCidade,
+      mensagem : empresaMensagem,
+      celular : empresaCelular,
+      telefone : empresaTelefone,
+      endereco : empresaEndereco,
+      estado : empresaEstado,
+      imagem : empresaImagem,
+      responsavel : empresaResponsavel,
+    }).then(() => {
+      //Atualiza LocalStorage
+      const emp = {
+        nome: empresaNome,
+        codigo: empresaCodigo,
+        celular: empresaCelular,
+        telefone: empresaTelefone,
+        cnpj: empresaCnpj,
+        email: empresaEmail,
+        endereco: empresaEndereco,
+        estado: empresaEstado,
+        cidade: empresaCidade,
+        mensagem: empresaMensagem,
+        imagem: empresaImagem,
+        responsavel: empresaResponsavel,
+      };
+      var jsonAux = JSON.stringify(emp);
+      localStorage.setItem("empresa", jsonAux);
+
+      toast.success("Dados alterados com sucesso.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      
+    }).catch((error) => {
+      toast.error(error, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    })
+   }
 
 
   useEffect(() => {
@@ -82,7 +137,7 @@ function Home() {
     setEmpresaCodigo(emp.codigo);
     setEmpresaImagem(emp.imagem);
     setEmpresaResponsavel(emp.responsavel);
-    setEmpresaSite(emp.site);
+    
   }
   }, []);
 
@@ -147,7 +202,21 @@ function Home() {
         <Paper elevation={0} className="paper">
           
           <Form>
-          
+          <Box sx={{ width: 1500, maxWidth: "100%" }}>
+              <TextField
+                fullWidth
+                label="Código"
+                id="cliente"
+                value={empresaCodigo}
+                onChange={(e) => setEmpresaCodigo(e.target.value)}
+                autoFocus
+                InputProps={{
+                  readOnly: true,
+                }}
+                disabled
+              />
+            </Box>
+            <br></br>
           <Box sx={{ width: 1500, maxWidth: "100%" }}>
               <TextField
                 fullWidth
@@ -258,10 +327,23 @@ function Home() {
               />
             </Box>
             <br></br>
+            <Box sx={{ width: 1500, maxWidth: "100%" }}>
+            <TextField
+            fullWidth
+          id="outlined-multiline-flexible"
+          label="Mensagem"
+          multiline
+          maxRows={4}
+          value={empresaMensagem}
+          onChange={(e) => setEmpresaMensagem(e.target.value)}
+        
+              />
+            </Box>
+            <br></br>
             
           </Form>
           <div className="d-grid gap-2">
-          <Button variant="contained"  sx={{mt: 1,mb: 3 }}>Salvar</Button>
+          <Button variant="contained"  sx={{mt: 1,mb: 3 }} onClick={alterarEmpresa}>Salvar Alterações</Button>
           </div>
         </Paper>
       </Container>
