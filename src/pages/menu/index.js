@@ -64,6 +64,7 @@ function Home() {
   const [empresaImagem, setEmpresaImagem] = useState();
   const [empresaResponsavel, setEmpresaResponsavel] = useState();
   const [empresaSite, setEmpresaSite] = useState();
+  const [tipoEmpresa, setTipoEmpresa] = useState();
 
   const navigate = useNavigate();
   const goSair = () => {
@@ -71,8 +72,16 @@ function Home() {
     navigate("/");
   };
   const goInicio = () => {
-    navigate("/inicio");
-  };
+    var empresaJson = localStorage.getItem("empresa");
+    const emp = JSON.parse(empresaJson);
+    if(emp.tipo === 1){
+      navigate("/inicio");
+    }
+    if(emp.tipo === 2){
+      navigate("/inicio2");
+    }
+  }
+  
   const goEnviados = () => {
     navigate("/enviados");
   };
@@ -107,6 +116,7 @@ function Home() {
       setEmpresaImagem(emp.imagem);
       setEmpresaResponsavel(emp.responsavel);
       setEmpresaSite(emp.site);
+      setTipoEmpresa(emp.tipo);
     }
   }, []);
 

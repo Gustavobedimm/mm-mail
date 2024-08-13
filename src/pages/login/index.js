@@ -54,8 +54,9 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
   const goInicio = () => {
-    navigate("/menu");
+        navigate("/menu");
   };
 
   async function buscarEmpresa() {
@@ -102,6 +103,7 @@ export default function SignIn() {
             imagem: snapshot.data().imagem,
             responsavel: snapshot.data().responsavel,
             site: snapshot.data().site,
+            tipo: snapshot.data().tipo,
           };
           var jsonAux = JSON.stringify(emp);
           localStorage.setItem("empresa", jsonAux);
