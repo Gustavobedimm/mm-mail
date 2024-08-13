@@ -220,90 +220,12 @@ function Home() {
 
   function limpaCampos() {
     handleClose();
-    //setChecked1(false);
-    //setChecked2(false);
-    //setChecked3(false);
-    //setChecked4(false);
-    //setChecked5(false);
-    //setChecked6(false);
-    //setChecked7(false);
-    //setChecked8(false);
-    //setChecked9(false);
-    //setNome("");
-    //setCpf("");
-    //setEmail("");
-    //setOrigem("CASCAVEL-PR");
-    //setDestino("CASCAVEL-PR");
-    //setValor("");
-    //setObs("");
   }
-  // function toDataUrl(url, callback) {
-  //   var xhr = new XMLHttpRequest();
-  //   xhr.onload = function() {
-  //       var reader = new FileReader();
-  //       reader.onloadend = function() {
-  //           callback(reader.result);
-  //       }
-  //       reader.readAsDataURL(xhr.response);
-  //   };
-  //   xhr.open('GET', url);
-  //   xhr.responseType = 'blob';
-  //   xhr.send();
-  // }
+  
 
   async function EnviarEmail() {
-    if (email.length < 1) {
-      toast.error("O email deve ser informado.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-      return;
-    }
-    if (nome.length < 1) {
-      toast.error("O nome deve ser informado.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-      return;
-    }
-
-    if (valor.length < 1) {
-      toast.error("O valor deve ser informado.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-      return;
-    }
-
-    //toDataUrl(empresaImagem, function(myBase64Par) {
-    //const buf = Buffer.from(myBase64Par, 'base64');
-    //setMyBase64(buf);
-    //console.log(myBase64Par);
-    //console.log(buf);
-
-    //});
-
     setLoading(true);
     setTextoBotao("Enviando E-mail");
-
     const data = {
       nome: nome,
       doc: cpf,
@@ -494,45 +416,27 @@ function Home() {
             <br></br>
             <br></br>
             <Box sx={{ width: 1500, maxWidth: "100%" }}>
-              <TextField
-                fullWidth
-                id="outlined-number"
-                label="Quantidade"
-                type="number"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Box>
-            <br></br>
-            <Box sx={{ width: 1500, maxWidth: "100%" }}>
               <TextField id="outlined" label="Valor" fullWidth />
             </Box>
-
+            <div className="d-grid gap-2">  
             <Button variant="contained" sx={{ mt: 2, mb: 3 }}>
               Adicionar
             </Button>
+            </div>
             <br></br>
 
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <Table sx={{ minWidth: 100 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell>Procedimento </TableCell>
-                    <TableCell align="right">Qtde</TableCell>
                     <TableCell align="right">Valor</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {rows.map((row) => (
-                    <TableRow
-                      key={row.name}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
+                    <TableRow key={row.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                      <TableCell component="th" scope="row">{row.name}</TableCell>
                       <TableCell align="right">{row.fat}</TableCell>
                     </TableRow>
                   ))}
