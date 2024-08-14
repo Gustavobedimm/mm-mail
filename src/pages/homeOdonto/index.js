@@ -48,9 +48,9 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [textoBotao, setTextoBotao] = useState("Enviar");
   const [nome, setNome] = useState("");
-  const [cpf, setCpf] = useState("");
   const [email, setEmail] = useState("");
   const [valor, setValor] = useState("");
+  const [valorTotal, setValorTotal] = useState("");
   const [obs, setObs] = useState("");
   const [preVisualiza, setPreVisualiza] = useState(false);
   const [enviaEmail, setEnviaEmail] = useState(true);
@@ -98,30 +98,11 @@ function Home() {
       },
     },
   };
-  const rows = [
-    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-    createData("Eclair", 262, 16.0, 24, 6.0),
-    createData("Cupcake", 305, 3.7, 67, 4.3),
-    createData("Gingerbread", 356, 16.0, 49, 3.9),
-  ];
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
-
-  const top100Films = [
-    { label: "The Shawshank Redemption", year: 1994 },
-    { label: "The Godfather", year: 1972 },
-    { label: "The Godfather: Part II", year: 1974 },
-    { label: "The Dark Knight", year: 2008 },
-    { label: "12 Angry Men", year: 1957 },
-    { label: "Schindler's List", year: 1993 },
-    { label: "Pulp Fiction", year: 1994 },
-  ];
+ 
 
   const formatCurrency = (value, currency, localeString) => {
     const options = { style: "currency", currency };
-    setValor(value.toLocaleString(localeString, options));
+    setValorTotal(value.toLocaleString(localeString, options));
   };
 
   //App BAR
@@ -132,6 +113,22 @@ function Home() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+function handleAdd (){
+  setListaProcedimentosTmp([...listaProcedimentosTmp,{ id: value.id , label: value.label, valor: valor }]);
+  let lista2 = listaProcedimentosTmp;
+  let total = 0;
+  lista2.push({id: value.id , label: value.label, valor: valor});
+  lista2.map((row) => {
+    total = total + parseFloat(row.valor);
+  })
+  var f2 = total.toLocaleString('pt-br', {minimumFractionDigits: 2});
+  setValorTotal(f2);
+  setValor("");
+}
+function handleUpdateSumTot(){
+  
+}
+
   async function getProcedimentos() {
     const postsRef = collection(db, "procedimentos");
     await getDocs(postsRef)
@@ -190,16 +187,7 @@ function Home() {
     }
   }
 
-  function handleAddTmp() {
-    console.log(value);
-    let lista = listaProcedimentosTmp;
-    lista.push({
-      id: value.id,
-      label: value.label,
-      valor: value.valor,
-    });
-    setListaProcedimentosTmp(lista);
-  }
+
 
   function montaPDF(response) {
     const base64PDF = response.data.pdfBase64;
@@ -217,6 +205,7 @@ function Home() {
     }
     AddEmail(base64PDF);
   }
+
   //--banco de dados
   async function AddEmail(base64PDF) {
     const date = new Date();
@@ -240,11 +229,21 @@ function Home() {
     setLoading(true);
     setTextoBotao("Enviando E-mail");
     const data = {
+      //dados da tela 
+        //nome do paciente
+        //email do paciente
+        //lista de procedimentos
+        //observação
+        //valor total
+        //envia email
+        //visualizaPDF
+
       nome: nome,
-      doc: cpf,
       email: email,
-      valor: valor,
+      valorTotal: valorTotal,
       obs: obs,
+      procedimentos : listaProcedimentosTmp,
+      //dados da empresa
       enviaEmail: enviaEmail,
       empresaNome: empresaNome,
       empresaCelular: empresaCelular,
@@ -259,39 +258,18 @@ function Home() {
       empresaImagem: empresaImagem,
       empresaResponsavel: empresaResponsavel,
       empresaSite: empresaSite,
-      //imagemBase64:myBase64
     };
+    console.log(data);
 
-    await Api.post("/send-mail", data, {
+    await Api.post("/send-mail-odonto", data, {
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
         limpaCampos();
-
         montaPDF(response);
-
-        toast.success("E-mail enviado com sucesso.", {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
       })
       .catch((error) => {
-        toast.error("Erro ao enviar E-mail, verifique o E-Mail informado.", {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
+          console.log(error);       
       });
 
     setTextoBotao("Enviar");
@@ -411,9 +389,11 @@ function Home() {
 
             <Autocomplete
               disablePortal
+              inputValue={value}
               onChange={(event, newValue) => {
                 setValue(newValue);
               }}
+              
               id="combo-box-demo"
               options={listaProcedimentos}
               sx={{ width: 1500, maxWidth: "100%" }}
@@ -421,7 +401,6 @@ function Home() {
                 <TextField {...params} label="Procedimento" />
               )}
             />
-
             <br></br>
             <br></br>
             <Box sx={{ width: 1500, maxWidth: "100%" }}>
@@ -434,13 +413,7 @@ function Home() {
               />
             </Box>
             <div className="d-grid gap-2">
-              <Button
-                variant="contained"
-                sx={{ mt: 2, mb: 3 }}
-                onClick={() => {
-                  handleAddTmp();
-                }}
-              >
+              <Button variant="contained" sx={{ mt: 2, mb: 3 }} onClick={() => {handleAdd()}}>
                 Adicionar
               </Button>
             </div>
@@ -456,13 +429,8 @@ function Home() {
                 </TableHead>
                 <TableBody>
                   {listaProcedimentosTmp.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.label}
-                      </TableCell>
+                    <TableRow key={row.id}sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                      <TableCell component="th" scope="row">{row.label}</TableCell>
                       <TableCell align="right">{row.valor}</TableCell>
                     </TableRow>
                   ))}
@@ -492,8 +460,9 @@ function Home() {
                 label="Valor"
                 pattern="\d*"
                 id="origem"
-                value={valor}
+                value={valorTotal}
                 onChange={(e) => formatCurrency(e.target.value, "BRL", "pt-BR")}
+                
               />
             </Box>
             <br></br>
