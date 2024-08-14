@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./index.css";
 import Api from "../../Api";
 import { db } from "../../firebaseConection";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, query, getDocs } from "firebase/firestore";
 //bootstrao
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -40,6 +40,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Autocomplete from "@mui/material/Autocomplete";
 
 //import { Buffer } from 'buffer';
 
@@ -69,8 +70,10 @@ function Home() {
   const [empresaImagem, setEmpresaImagem] = useState();
   const [empresaResponsavel, setEmpresaResponsavel] = useState();
   const [empresaSite, setEmpresaSite] = useState();
+  const [listaProcedimentos, setListaProcedimentos] = useState([]);
+  const [listaProcedimentosTmp, setListaProcedimentosTmp] = useState([]);
 
-  const [myBase64, setMyBase64] = useState();
+  const [value, setValue] = useState(listaProcedimentos[0]);
 
   const navigate = useNavigate();
   const goEnviado = () => {
@@ -106,17 +109,14 @@ function Home() {
     return { name, calories, fat, carbs, protein };
   }
 
-  const names = [
-    "Oliver Hansen",
-    "Van Henry",
-    "April Tucker",
-    "Ralph Hubbard",
-    "Omar Alexander",
-    "Carlos Abbott",
-    "Miriam Wagner",
-    "Bradley Wilkerson",
-    "Virginia Andrews",
-    "Kelly Snyder",
+  const top100Films = [
+    { label: "The Shawshank Redemption", year: 1994 },
+    { label: "The Godfather", year: 1972 },
+    { label: "The Godfather: Part II", year: 1974 },
+    { label: "The Dark Knight", year: 2008 },
+    { label: "12 Angry Men", year: 1957 },
+    { label: "Schindler's List", year: 1993 },
+    { label: "Pulp Fiction", year: 1994 },
   ];
 
   const formatCurrency = (value, currency, localeString) => {
@@ -132,6 +132,25 @@ function Home() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  async function getProcedimentos() {
+    const postsRef = collection(db, "procedimentos");
+    await getDocs(postsRef)
+      .then((snapshot) => {
+        let lista = [];
+        snapshot.forEach((doc) => {
+          lista.push({
+            label: doc.data().descricao,
+            id: doc.id,
+            valor: doc.data().valor,
+          });
+        });
+        setListaProcedimentos(lista);
+      })
+      .catch((error) => {
+        console.log("deu algum erro ao buscar" + error);
+      });
+  }
+
   useEffect(() => {
     if (localStorage.getItem("empresa") === null) {
       navigate("/");
@@ -152,6 +171,7 @@ function Home() {
       setEmpresaResponsavel(emp.responsavel);
       setEmpresaSite(emp.site);
     }
+    getProcedimentos();
   }, []);
 
   //PDF
@@ -169,6 +189,18 @@ function Home() {
       setEnviaEmail(false);
     }
   }
+
+  function handleAddTmp() {
+    console.log(value);
+    let lista = listaProcedimentosTmp;
+    lista.push({
+      id: value.id,
+      label: value.label,
+      valor: value.valor,
+    });
+    setListaProcedimentosTmp(lista);
+  }
+
   function montaPDF(response) {
     const base64PDF = response.data.pdfBase64;
     if (preVisualiza) {
@@ -198,30 +230,11 @@ function Home() {
     const dataConversao = ano + "-" + mes + "-" + dia;
 
     //CADASTRAR NOVO
-    await addDoc(collection(db, "emailmm"), {
-      nome: nome,
-      doc: cpf,
-      email: email,
-      valor: valor,
-      obs: obs,
-      enviaEmail: enviaEmail,
-      base64PDF: base64PDF,
-      dataEnvio: StringdataAtual,
-      dataEnvioConversao: dataConversao,
-      empresaCodigo: empresaCodigo,
-    })
-      .then(() => {
-        console.log("gravado no banco");
-      })
-      .catch((error) => {
-        console.log("erro ao gravar em banco" + error);
-      });
   }
 
   function limpaCampos() {
     handleClose();
   }
-  
 
   async function EnviarEmail() {
     setLoading(true);
@@ -396,32 +409,40 @@ function Home() {
             <Divider textAlign="left">Procedimentos</Divider>
             <br></br>
 
-            <FormControl sx={{ width: 1500, maxWidth: "100%" }}>
-              <InputLabel id="demo-multiple-name-label">
-                Procedimento
-              </InputLabel>
-              <Select
-                labelId="demo-multiple-name-label"
-                id="demo-multiple-name"
-                input={<OutlinedInput label="Procedimento" />}
-                MenuProps={MenuProps}
-              >
-                {names.map((name) => (
-                  <MenuItem key={name} value={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Autocomplete
+              disablePortal
+              onChange={(event, newValue) => {
+                setValue(newValue);
+              }}
+              id="combo-box-demo"
+              options={listaProcedimentos}
+              sx={{ width: 1500, maxWidth: "100%" }}
+              renderInput={(params) => (
+                <TextField {...params} label="Procedimento" />
+              )}
+            />
+
             <br></br>
             <br></br>
             <Box sx={{ width: 1500, maxWidth: "100%" }}>
-              <TextField id="outlined" label="Valor" fullWidth />
+              <TextField
+                id="outlined"
+                label="Valor"
+                fullWidth
+                value={valor}
+                onChange={(e) => setValor(e.target.value)}
+              />
             </Box>
-            <div className="d-grid gap-2">  
-            <Button variant="contained" sx={{ mt: 2, mb: 3 }}>
-              Adicionar
-            </Button>
+            <div className="d-grid gap-2">
+              <Button
+                variant="contained"
+                sx={{ mt: 2, mb: 3 }}
+                onClick={() => {
+                  handleAddTmp();
+                }}
+              >
+                Adicionar
+              </Button>
             </div>
             <br></br>
 
@@ -434,10 +455,15 @@ function Home() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
-                    <TableRow key={row.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                      <TableCell component="th" scope="row">{row.name}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
+                  {listaProcedimentosTmp.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.label}
+                      </TableCell>
+                      <TableCell align="right">{row.valor}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
