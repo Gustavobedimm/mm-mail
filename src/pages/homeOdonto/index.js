@@ -83,12 +83,13 @@ function handleAdd (){
   var f2 = total.toLocaleString('pt-br', {minimumFractionDigits: 2});
   setValorTotal(f2);
   setValor("");
+  
 }
-function handleDelete(rowAux){
+function handleDelete(index_aux){
   let listaTmp = [...listaProcedimentosTmp];
   //remove o documento pelo id
   listaTmp.map((row,index) => {
-    if(row.id === rowAux.id){
+    if(index_aux === index){
       listaTmp.splice(index,1);
     }
   })
@@ -102,6 +103,7 @@ function handleDelete(rowAux){
   setValorTotal(f2);
   setListaProcedimentosTmp(listaTmp);
 }
+
 
   async function getProcedimentos() {
     const postsRef = collection(db, "procedimentos");
@@ -266,7 +268,7 @@ function handleDelete(rowAux){
 
             <Autocomplete
               disablePortal
-              inputValue={value}
+              value={value}
               onChange={(event, newValue) => {
                 setValue(newValue);
               }}
@@ -306,11 +308,11 @@ function handleDelete(rowAux){
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {listaProcedimentosTmp.map((row) => (
-                    <TableRow key={row.id}sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                  {listaProcedimentosTmp.map((row,index) => (
+                    <TableRow key={index}sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                       <TableCell component="th" scope="row">{row.label}</TableCell>
                       <TableCell align="right">{row.valor}</TableCell>
-                      <TableCell align="right"><DeleteIcon color="secondary" onClick={() => {handleDelete(row)}}></DeleteIcon></TableCell>
+                      <TableCell align="right"><DeleteIcon color="secondary" onClick={() => {handleDelete(index)}}></DeleteIcon></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
