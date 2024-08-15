@@ -173,14 +173,17 @@ function handleDelete(rowAux){
       var file = new Blob([byteArray], { type: "application/pdf;base64" });
       var fileURL = URL.createObjectURL(file);
       //add registro banco
-      window.open(fileURL);
+      setTimeout(() => {
+        window.open(fileURL);
+      });
+      //window.open(fileURL);
     }
-    AddEmail(base64PDF);
+    //AddEmail(base64PDF);
   }
 
   //--banco de dados
-  async function AddEmail(base64PDF) {
-  }
+  //async function AddEmail(base64PDF) {
+ // }
 
   function limpaCampos() {
   }
@@ -210,7 +213,7 @@ function handleDelete(rowAux){
       empresaResponsavel: empresaResponsavel,
       empresaSite: empresaSite,
     };
-    console.log(data);
+    
 
     await Api.post("/send-mail-odonto", data, {
       headers: { "Content-Type": "application/json" },

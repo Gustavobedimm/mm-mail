@@ -150,7 +150,9 @@ function Home() {
       var file = new Blob([byteArray], { type: "application/pdf;base64" });
       var fileURL = URL.createObjectURL(file);
       //add registro banco
-      window.open(fileURL);
+      setTimeout(() => {
+        window.open(fileURL);
+      });
     }
     AddEmail(base64PDF);
   }
