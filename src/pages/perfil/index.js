@@ -5,30 +5,20 @@ import { doc, updateDoc } from "firebase/firestore";
 //bootstrao
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
+import HeaderApp from "../../components/headerApp";
 
 //toastify
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 //mui
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 function Home() {
-  //const [loading, setLoading] = useState(false);
-  const [auth, setAuth] = useState(true);
-  //dados da empresa
   const [empresaNome, setEmpresaNome] = useState();
   const [empresaCelular, setEmpresaCelular] = useState();
   const [empresaTelefone, setEmpresaTelefone] = useState();
@@ -41,25 +31,10 @@ function Home() {
   const [empresaCodigo, setEmpresaCodigo] = useState();
   const [empresaImagem, setEmpresaImagem] = useState();
   const [empresaResponsavel, setEmpresaResponsavel] = useState();
-  
-  const navigate = useNavigate();
- 
-  const goSair = () => {
-    localStorage.removeItem("empresa");
-    navigate("/");
-  };
-  const goMenu = () => {
-     navigate("/menu");
-  };
+  const [empresaTipo , setEmpresaTipo] = useState();
 
-  //App BAR
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const navigate = useNavigate();
+  
   async function alterarEmpresa(){
     const docRef = doc(db, "empresas" , empresaCodigo);
     await updateDoc(docRef, {
@@ -74,6 +49,7 @@ function Home() {
       estado : empresaEstado,
       imagem : empresaImagem,
       responsavel : empresaResponsavel,
+      
     }).then(() => {
       //Atualiza LocalStorage
       const emp = {
@@ -89,6 +65,7 @@ function Home() {
         mensagem: empresaMensagem,
         imagem: empresaImagem,
         responsavel: empresaResponsavel,
+        tipo : empresaTipo,
       };
       var jsonAux = JSON.stringify(emp);
       localStorage.setItem("empresa", jsonAux);
@@ -137,65 +114,14 @@ function Home() {
     setEmpresaCodigo(emp.codigo);
     setEmpresaImagem(emp.imagem);
     setEmpresaResponsavel(emp.responsavel);
+    setEmpresaTipo(emp.tipo);
     
   }
   }, []);
 
   return (
     <div className="App">
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }} onClick={() => {
-                  goMenu();
-                }}>
-      <ArrowBackIcon />
-    </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              {empresaNome} 
-            </Typography>
-            {auth && (
-              <div>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  
-                  
-                  <MenuItem
-                    onClick={() => {
-                      goSair();
-                    }}
-                  >
-                    Sair
-                  </MenuItem>
-                </Menu>
-              </div>
-            )}
-          </Toolbar>
-        </AppBar>
-      </Box>
+      <HeaderApp nome={empresaNome}></HeaderApp>
 
       <Container fluid="md" className="justify-content-md-center container">
         <ToastContainer />
@@ -335,6 +261,20 @@ function Home() {
           multiline
           maxRows={4}
           value={empresaMensagem}
+          onChange={(e) => setEmpresaMensagem(e.target.value)}
+        
+              />
+            </Box>
+            <br></br>
+            <Box sx={{ width: 1500, maxWidth: "100%" }}>
+            <TextField
+            disabled
+            fullWidth
+          id="outlined-multiline-flexible"
+          label="Tipo"
+          multiline
+          maxRows={4}
+          value={empresaTipo}
           onChange={(e) => setEmpresaMensagem(e.target.value)}
         
               />

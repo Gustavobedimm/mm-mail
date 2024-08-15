@@ -19,8 +19,6 @@ import {
   getDoc,
 } from "firebase/firestore";
 
-import "./index.css";
-
 function Copyright(props) {
   return (
     <Typography

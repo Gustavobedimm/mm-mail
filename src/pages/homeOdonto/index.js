@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import "./index.css";
 import Api from "../../Api";
+import HeaderApp from "../../components/headerApp";
 import { db } from "../../firebaseConection";
-import { collection, query, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 //bootstrao
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -13,27 +14,13 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 //mui
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import FormGroup from "@mui/material/FormGroup";
 import Button from "@mui/material/Button";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
 import Switch from "@mui/material/Switch";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -77,28 +64,6 @@ function Home() {
   const [value, setValue] = useState(listaProcedimentos[0]);
 
   const navigate = useNavigate();
-  const goEnviado = () => {
-    navigate("/enviados");
-  };
-
-  const goSair = () => {
-    localStorage.removeItem("empresa");
-    navigate("/");
-  };
-  const goMenu = () => {
-    navigate("/menu");
-  };
-
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
  
 
   const formatCurrency = (value, currency, localeString) => {
@@ -107,13 +72,6 @@ function Home() {
   };
 
   //App BAR
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 function handleAdd (){
   setListaProcedimentosTmp([...listaProcedimentosTmp,{ id: value.id , label: value.label, valor: valor }]);
   let lista2 = [...listaProcedimentosTmp];
@@ -203,8 +161,6 @@ function handleDelete(rowAux){
     }
   }
 
-
-
   function montaPDF(response) {
     const base64PDF = response.data.pdfBase64;
     if (preVisualiza) {
@@ -224,27 +180,15 @@ function handleDelete(rowAux){
 
   //--banco de dados
   async function AddEmail(base64PDF) {
-    
-    //CADASTRAR NOVO
   }
 
   function limpaCampos() {
-    handleClose();
   }
 
   async function EnviarEmail() {
     setLoading(true);
     setTextoBotao("Enviando E-mail");
     const data = {
-      //dados da tela 
-        //nome do paciente
-        //email do paciente
-        //lista de procedimentos
-        //observação
-        //valor total
-        //envia email
-        //visualizaPDF
-
       nome: nome,
       email: email,
       valorTotal: valorTotal,
@@ -285,86 +229,9 @@ function handleDelete(rowAux){
 
   return (
     <div className="App">
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={() => {
-                goMenu();
-              }}
-            >
-              <ArrowBackIcon />
-            </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              {empresaNome}
-            </Typography>
-            {auth && (
-              <div>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem
-                    onClick={() => {
-                      goMenu();
-                    }}
-                  >
-                    Voltar para o Menu
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      limpaCampos();
-                    }}
-                  >
-                    Limpar Campos
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      goEnviado();
-                    }}
-                  >
-                    E-Mails Enviados
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      goSair();
-                    }}
-                  >
-                    Sair
-                  </MenuItem>
-                </Menu>
-              </div>
-            )}
-          </Toolbar>
-        </AppBar>
-      </Box>
-
+      <HeaderApp nome={empresaNome}></HeaderApp>
       <Container fluid="md" className="justify-content-md-center container">
+        
         <ToastContainer />
         <Paper elevation={0} className="paper">
           <Divider textAlign="left">Dados do Paciente</Divider>
@@ -440,7 +307,7 @@ function handleDelete(rowAux){
                     <TableRow key={row.id}sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                       <TableCell component="th" scope="row">{row.label}</TableCell>
                       <TableCell align="right">{row.valor}</TableCell>
-                      <TableCell align="right"><DeleteIcon onClick={() => {handleDelete(row)}}></DeleteIcon></TableCell>
+                      <TableCell align="right"><DeleteIcon color="secondary" onClick={() => {handleDelete(row)}}></DeleteIcon></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

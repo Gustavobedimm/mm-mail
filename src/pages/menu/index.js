@@ -1,55 +1,31 @@
 import { useState, useEffect } from "react";
 import "./index.css";
-import Api from "../../Api";
-import { db } from "../../firebaseConection";
-import { collection, addDoc } from "firebase/firestore";
+import HeaderApp from "../../components/headerApp";
 //bootstrao
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-//import Button from "react-bootstrap/Button";
-import Spinner from "react-bootstrap/Spinner";
 //toastify
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 //mui
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
 import Divider from "@mui/material/Divider";
-import Badge from '@mui/material/Badge';
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import FormGroup from "@mui/material/FormGroup";
-import Button from "@mui/material/Button";
-import MenuIcon from "@mui/icons-material/Menu";
 
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import Switch from "@mui/material/Switch";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import DraftsIcon from '@mui/icons-material/Drafts';
 import SendIcon from '@mui/icons-material/Send';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 
-//import { Buffer } from 'buffer';
-
 function Home() {
-  const [auth, setAuth] = useState(true);
 
   const [empresaNome, setEmpresaNome] = useState();
   const [empresaCelular, setEmpresaCelular] = useState();
@@ -89,14 +65,6 @@ function Home() {
     navigate("/perfil");
   };
 
-  //App BAR
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   useEffect(() => {
     if (localStorage.getItem("empresa") === null) {
       navigate("/");
@@ -122,54 +90,7 @@ function Home() {
 
   return (
     <div className="App">
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-          
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              {empresaNome}
-            </Typography>
-            {auth && (
-              <div>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem
-                    onClick={() => {
-                      goSair();
-                    }}
-                  >
-                    Sair
-                  </MenuItem>
-                </Menu>
-              </div>
-            )}
-          </Toolbar>
-        </AppBar>
-      </Box>
-
+      <HeaderApp nome={empresaNome}></HeaderApp>
       <Container fluid="md" className="justify-content-md-center container">
         <ToastContainer />
         <Paper elevation={0} className="paper">

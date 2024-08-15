@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import HeaderApp from "../../components/headerApp";
 
 //bootstraoz
 import Container from "react-bootstrap/Container";
@@ -245,77 +246,7 @@ function Home() {
   return (
     <div className="App">
       <ToastContainer />
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={() => {
-                goMenu();
-              }}
-            >
-              <ArrowBackIcon />
-            </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              {empresaNome}
-            </Typography>
-            {auth && (
-              <div>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem
-                    onClick={() => {
-                      goMenu();
-                    }}
-                  >
-                    Volta ao Menu
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      goEnviado();
-                    }}
-                  >
-                    Enviar orçamento
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      goSair();
-                    }}
-                  >
-                    Sair
-                  </MenuItem>
-                </Menu>
-              </div>
-            )}
-          </Toolbar>
-        </AppBar>
-      </Box>
+      <HeaderApp nome={empresaNome}></HeaderApp>
 
       <Container fluid="md" className="justify-content-md-center container">
         <Paper elevation={0} className="paperModificado">
