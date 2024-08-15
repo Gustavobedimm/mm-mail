@@ -208,16 +208,7 @@ function handleUpdateSumTot(){
 
   //--banco de dados
   async function AddEmail(base64PDF) {
-    const date = new Date();
-    const dia = date.getDate().toString().padStart(2, "0");
-    let mes = date.getMonth() + 1;
-    mes = mes.toString().padStart(2, "0");
-    const ano = date.getFullYear();
-    const h = date.getHours();
-    const m = date.getMinutes();
-    const StringdataAtual = dia + "/" + mes + "/" + ano + " " + h + ":" + m;
-    const dataConversao = ano + "-" + mes + "-" + dia;
-
+    
     //CADASTRAR NOVO
   }
 
