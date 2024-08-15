@@ -41,6 +41,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Autocomplete from "@mui/material/Autocomplete";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 //import { Buffer } from 'buffer';
 
@@ -115,7 +116,7 @@ function Home() {
   };
 function handleAdd (){
   setListaProcedimentosTmp([...listaProcedimentosTmp,{ id: value.id , label: value.label, valor: valor }]);
-  let lista2 = listaProcedimentosTmp;
+  let lista2 = [...listaProcedimentosTmp];
   let total = 0;
   lista2.push({id: value.id , label: value.label, valor: valor});
   lista2.map((row) => {
@@ -125,8 +126,23 @@ function handleAdd (){
   setValorTotal(f2);
   setValor("");
 }
-function handleUpdateSumTot(){
-  
+function handleDelete(rowAux){
+  let listaTmp = [...listaProcedimentosTmp];
+  //remove o documento pelo id
+  listaTmp.map((row,index) => {
+    if(row.id === rowAux.id){
+      listaTmp.splice(index,1);
+    }
+  })
+  //recalcula o total do orcamento
+  let total = 0;
+  listaTmp.map((row) => {
+    total = total + parseFloat(row.valor);
+    
+  })
+  var f2 = total.toLocaleString('pt-br', {minimumFractionDigits: 2});
+  setValorTotal(f2);
+  setListaProcedimentosTmp(listaTmp);
 }
 
   async function getProcedimentos() {
@@ -416,6 +432,7 @@ function handleUpdateSumTot(){
                   <TableRow>
                     <TableCell>Procedimento </TableCell>
                     <TableCell align="right">Valor</TableCell>
+                    <TableCell align="right">Apagar</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -423,6 +440,7 @@ function handleUpdateSumTot(){
                     <TableRow key={row.id}sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                       <TableCell component="th" scope="row">{row.label}</TableCell>
                       <TableCell align="right">{row.valor}</TableCell>
+                      <TableCell align="right"><DeleteIcon onClick={() => {handleDelete(row)}}></DeleteIcon></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
