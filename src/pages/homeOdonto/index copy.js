@@ -30,16 +30,6 @@ import TableRow from "@mui/material/TableRow";
 import Autocomplete from "@mui/material/Autocomplete";
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import RestoreIcon from '@mui/icons-material/Restore';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 //import { Buffer } from 'buffer';
 
 function Home() {
@@ -73,13 +63,6 @@ function Home() {
 
   const [value, setValue] = useState('');
   const [inputValue, setInputValue] = useState('');
-  const [valueBtnNav, setValueBtnNav] = useState(0);
-
-  const [valueTab, setValueTab] = useState('1');
-
-  const handleChange = (event, newValue) => {
-    setValueTab(newValue);
-  };
 
   const navigate = useNavigate();
  
@@ -88,25 +71,6 @@ function Home() {
     const options = { style: "currency", currency };
     setValorTotal(value.toLocaleString(localeString, options));
   };
-  function handleNavigation(newValue){
-    setValueBtnNav(newValue);
-    let index = valueTab;
-    if(index === '1'){
-      index = '2';
-      setValueTab(index);
-      return;
-    }
-    if(index === '2'){
-      index = '3';
-      setValueTab(index);
-      return;
-    }
-    if(index === '3'){
-      index = '1'
-      setValueTab(index);
-      return;
-    }
-  }
 
   //App BAR
 function handleAdd (){
@@ -275,19 +239,12 @@ function handleDelete(index_aux){
     <div className="App">
       <HeaderApp nome={empresaNome}></HeaderApp>
       <Container fluid="md" className="justify-content-md-center container">
-        <ToastContainer />
-
         
-      <TabContext value={valueTab}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Paciente" value="1" />
-            <Tab label="Procedimentos" value="2" />
-            <Tab label="Total" value="3" />
-            
-          </TabList>
-        </Box>
-        <TabPanel value="1">
+        <ToastContainer />
+        <Paper elevation={0} className="paper">
+          <Divider textAlign="left">Dados do Paciente</Divider>
+          <br></br>
+          <Form>
             <Box sx={{ width: 1500, maxWidth: "100%" }}>
               <TextField
                 fullWidth
@@ -309,24 +266,10 @@ function handleDelete(index_aux){
               />
             </Box>
             <br></br>
-            <Box sx={{ width: 1500, maxWidth: "100%" }}>
-              <TextField
-                fullWidth
-                label="Documento"
-                id="documento"
-              />
-            </Box>
+            <Divider textAlign="left">Procedimentos</Divider>
             <br></br>
-            <Box sx={{ width: 1500, maxWidth: "100%" }}>
-              <TextField
-                fullWidth
-                label="Celular"
-                id="celular"
-              />
-            </Box>
-        </TabPanel>
-        <TabPanel value="2">
-          <Autocomplete
+            
+            <Autocomplete
               disablePortal
               value={value}
               onChange={(event, newValue) => {
@@ -345,13 +288,6 @@ function handleDelete(index_aux){
               )}
             />
             <br></br>
-            <Box sx={{ width: 1500, maxWidth: "100%" }}>
-              <TextField
-                fullWidth
-                label="Dente"
-                id="dente"
-              />
-            </Box>
             <br></br>
             <Box sx={{ width: 1500, maxWidth: "100%" }}>
               <TextField
@@ -367,6 +303,7 @@ function handleDelete(index_aux){
                 Adicionar
               </Button>
             </div>
+            <br></br>
 
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 100 }} aria-label="simple table">
@@ -387,8 +324,10 @@ function handleDelete(index_aux){
                   ))}
                 </TableBody>
               </Table>
-            </TableContainer></TabPanel>
-            <TabPanel value="3">
+            </TableContainer>
+
+            <br></br>
+            <br></br>
             <Box sx={{ width: 1500, maxWidth: "100%" }}>
               <TextField
                 fullWidth
@@ -399,6 +338,9 @@ function handleDelete(index_aux){
                 helperText="Observação sobre os procedimentos"
               />
             </Box>
+
+            <br></br>
+            <Divider textAlign="left">Valor do Orçamento</Divider>
             <br></br>
             <Box sx={{ width: 1500, maxWidth: "100%" }}>
               <TextField
@@ -412,7 +354,10 @@ function handleDelete(index_aux){
               />
             </Box>
             <br></br>
-            <FormControlLabel
+            <div className="d-grid gap-2">
+              <Divider textAlign="left">Configurações</Divider>
+              <br></br>
+              <FormControlLabel
                 control={
                   <Switch
                     checked={enviaEmail}
@@ -438,8 +383,6 @@ function handleDelete(index_aux){
                 }
                 label="Visualiza PDF"
               />
-              <br></br>
-              <div className="d-grid gap-2">
               <Button
                 variant="contained"
                 onClick={EnviarEmail}
@@ -457,44 +400,9 @@ function handleDelete(index_aux){
                 {textoBotao}
               </Button>
             </div>
-            
-        </TabPanel>
-        
-      </TabContext>
-    
-
-
-        <Paper elevation={0} className="paper">
-          
-          <Form>
-            
-            
-
-            
-          
-            
-
-            
-            
-            <br></br>
-            
           </Form>
         </Paper>
       </Container>
-      <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-      <Box sx={{ width: "100%" }}>
-      <BottomNavigation
-        showLabels
-        value={valueBtnNav}
-        onChange={(event, newValue) => {
-          handleNavigation(newValue);
-        }}
-      >
-         <BottomNavigationAction label="Proximo" icon={<ArrowCircleRightIcon />} />
-        
-      </BottomNavigation>
-    </Box>
-    </Paper>
     </div>
   );
 }
