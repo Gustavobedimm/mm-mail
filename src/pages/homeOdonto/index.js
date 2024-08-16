@@ -295,7 +295,6 @@ function handleDelete(index_aux){
                 id="cliente"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
-                autoFocus
               />
             </Box>
             <br></br>
