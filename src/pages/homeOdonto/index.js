@@ -40,6 +40,8 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
+import CancelIcon from '@mui/icons-material/Cancel';
 //import { Buffer } from 'buffer';
 
 function Home() {
@@ -295,6 +297,7 @@ function handleDelete(index_aux){
                 id="cliente"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
+                
               />
             </Box>
             <br></br>
@@ -488,8 +491,9 @@ function handleDelete(index_aux){
         onChange={(event, newValue) => {
           handleNavigation(newValue);
         }}
-      >
-         <BottomNavigationAction label="Proximo" icon={<ArrowCircleRightIcon />} />
+      >   <BottomNavigationAction label="Cancelar" icon={<CancelIcon />}/>
+         <BottomNavigationAction label="Proximo" icon={<ArrowCircleRightIcon />}/>
+         <BottomNavigationAction label="Enviar" icon={<MarkEmailReadIcon />}/>
         
       </BottomNavigation>
     </Box>
