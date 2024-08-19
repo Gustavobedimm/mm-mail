@@ -55,6 +55,8 @@ function Home() {
   const [obs, setObs] = useState("");
   const [preVisualiza, setPreVisualiza] = useState(false);
   const [enviaEmail, setEnviaEmail] = useState(true);
+  const [documento, setDocumento] = useState();
+  const [telefone, setTelefone] = useState();
 
   const [auth, setAuth] = useState(true);
 
@@ -85,6 +87,32 @@ function Home() {
   };
 
   const navigate = useNavigate();
+
+  function handleNotify(error,mensagem){
+    if(error){
+      toast.error(mensagem, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }else{
+    toast.success(mensagem, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  }
+  }
  
 
   const formatCurrency = (value, currency, localeString) => {
@@ -242,6 +270,8 @@ function handleDelete(index_aux){
       valorTotal: valorTotal,
       obs: obs,
       procedimentos : listaProcedimentosTmp,
+      telefone : telefone,
+      documento: documento,
       //dados da empresa
       enviaEmail: enviaEmail,
       empresaNome: empresaNome,
@@ -258,19 +288,19 @@ function handleDelete(index_aux){
       empresaResponsavel: empresaResponsavel,
       empresaSite: empresaSite,
     };
-    
 
     await Api.post("/send-mail-odonto", data, {
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
         limpaCampos();
+        handleNotify(false,"Orçamento gerado com sucesso.");
         montaPDF(response);
       })
       .catch((error) => {
-          console.log(error);       
+          console.log(error);
+          handleNotify(false,"Erro ao gerar o orcamento.")       
       });
-
     setTextoBotao("Enviar");
     setLoading(false);
   }
@@ -318,6 +348,8 @@ function handleDelete(index_aux){
                 fullWidth
                 label="Documento"
                 id="documento"
+                value={documento}
+                onChange={(e) => setDocumento(e.target.value)}
               />
             </Box>
             <br></br>
@@ -326,6 +358,8 @@ function handleDelete(index_aux){
                 fullWidth
                 label="Celular"
                 id="celular"
+                value={telefone}
+                onChange={(e) => setTelefone(e.target.value)}
               />
             </Box>
         </TabPanel>
@@ -352,6 +386,7 @@ function handleDelete(index_aux){
             <Box sx={{ width: 1500, maxWidth: "100%" }}>
               <TextField
                 fullWidth
+                type="number"
                 label="Dente"
                 id="dente"
                 value={dente}

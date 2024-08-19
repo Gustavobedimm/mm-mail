@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect } from "react";
+import "./index.css";
 //bootstrao
 
 import Button from "@mui/material/Button";
@@ -125,10 +126,8 @@ export default function SignIn() {
   }
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <ToastContainer />
-        <CssBaseline />
+    <div className="container-principal">
+    <ToastContainer />
         <Box
           sx={{
             marginTop: 30,
@@ -140,7 +139,7 @@ export default function SignIn() {
           {/*<Avatar sx={{ m: 1, bgcolor: "black" }}>
             <LockOutlinedIcon />
           </Avatar>*/}
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" className="label-h5">
             Bem-vindo de volta!
           </Typography>
           <Box
@@ -188,7 +187,8 @@ export default function SignIn() {
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+      
+    
+    </div>
   );
 }
