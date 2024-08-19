@@ -50,6 +50,7 @@ function Home() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [valor, setValor] = useState("");
+  const [dente, setDente] = useState("");
   const [valorTotal, setValorTotal] = useState("");
   const [obs, setObs] = useState("");
   const [preVisualiza, setPreVisualiza] = useState(false);
@@ -112,16 +113,17 @@ function Home() {
 
   //App BAR
 function handleAdd (){
-  setListaProcedimentosTmp([...listaProcedimentosTmp,{ id: value.id , label: value.label, valor: valor }]);
+  setListaProcedimentosTmp([...listaProcedimentosTmp,{ id: value.id , label: value.label,dente : dente, valor: valor }]);
   let lista2 = [...listaProcedimentosTmp];
   let total = 0;
-  lista2.push({id: value.id , label: value.label, valor: valor});
+  lista2.push({id: value.id , label: value.label,dente : dente, valor: valor});
   lista2.map((row) => {
     total = total + parseFloat(row.valor);
   })
   var f2 = total.toLocaleString('pt-br', {minimumFractionDigits: 2});
   setValorTotal(f2);
   setValor("");
+  setDente("");
   setValue('')
   setInputValue('');
   
@@ -352,6 +354,8 @@ function handleDelete(index_aux){
                 fullWidth
                 label="Dente"
                 id="dente"
+                value={dente}
+                onChange={(e) => setDente(e.target.value)}
               />
             </Box>
             <br></br>
@@ -373,23 +377,26 @@ function handleDelete(index_aux){
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 100 }} aria-label="simple table">
                 <TableHead>
-                  <TableRow>
+                  <TableRow >
                     <TableCell>Procedimento </TableCell>
+                    <TableCell align="right">Dente</TableCell>
                     <TableCell align="right">Valor</TableCell>
                     <TableCell align="right">Apagar</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {listaProcedimentosTmp.map((row,index) => (
-                    <TableRow key={index}sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                    <TableRow key={index}sx={{ "&:last-child td, &:last-child th": { border: 0 } }} style ={ index % 2? { background : "#f8f9fa" }:{ background : "#e9ecef" }}>
                       <TableCell component="th" scope="row">{row.label}</TableCell>
+                      <TableCell align="right">{row.dente}</TableCell>
                       <TableCell align="right">{row.valor}</TableCell>
-                      <TableCell align="right"><DeleteIcon color="secondary" onClick={() => {handleDelete(index)}}></DeleteIcon></TableCell>
+                      <TableCell align="right"><DeleteIcon color="error" onClick={() => {handleDelete(index)}}></DeleteIcon></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
-            </TableContainer></TabPanel>
+            </TableContainer>
+            </TabPanel>
             <TabPanel value="3">
             <Box sx={{ width: 1500, maxWidth: "100%" }}>
               <TextField
