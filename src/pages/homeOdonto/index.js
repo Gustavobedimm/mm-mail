@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
-import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
@@ -36,9 +35,6 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import RestoreIcon from '@mui/icons-material/Restore';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -58,7 +54,6 @@ function Home() {
   const [documento, setDocumento] = useState();
   const [telefone, setTelefone] = useState();
 
-  const [auth, setAuth] = useState(true);
 
   const [empresaNome, setEmpresaNome] = useState();
   const [empresaCelular, setEmpresaCelular] = useState();

@@ -13,11 +13,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 //mui
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Divider from "@mui/material/Divider";
@@ -25,11 +21,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import Button from "@mui/material/Button";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
 import Switch from "@mui/material/Switch";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import HeaderApp from "../../components/headerApp";
 //import { Buffer } from 'buffer';
 
@@ -55,7 +47,6 @@ function Home() {
   const [checked7, setChecked7] = useState(false);
   const [checked8, setChecked8] = useState(false);
   const [checked9, setChecked9] = useState(false);
-  const [auth, setAuth] = useState(true);
 
   const [empresaNome, setEmpresaNome] = useState();
   const [empresaCelular, setEmpresaCelular] = useState();
@@ -71,35 +62,15 @@ function Home() {
   const [empresaResponsavel, setEmpresaResponsavel] = useState();
   const [empresaSite, setEmpresaSite] = useState();
 
-  const [myBase64,setMyBase64] = useState();
 
   const navigate = useNavigate();
-  const goEnviado = () => {
-    navigate("/enviados");
-  };
-  
-  const goSair = () => {
-    localStorage.removeItem("empresa");
-    navigate("/");
-  };
-  const goMenu = () => {
-     navigate("/menu");
-  };
-
-
+ 
   const formatCurrency = (value, currency, localeString) => {
     const options = { style: "currency", currency };
     setValor(value.toLocaleString(localeString, options));
   };
 
-  //App BAR
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  
   useEffect(() => {
     if (localStorage.getItem("empresa") === null) {
       navigate("/");
@@ -266,7 +237,6 @@ function Home() {
   }
 
   function limpaCampos() {
-    handleClose();
     //setChecked1(false);
     //setChecked2(false);
     //setChecked3(false);
