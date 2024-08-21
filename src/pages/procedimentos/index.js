@@ -3,7 +3,15 @@ import { useState, useEffect } from "react";
 import HeaderApp from "../../components/headerApp";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../firebaseConection";
-import { collection, query, getDocs ,addDoc ,deleteDoc ,doc ,updateDoc} from "firebase/firestore";
+import {
+  collection,
+  query,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -32,18 +40,17 @@ function Procedimentos() {
   const [empresaNome, setEmpresaNome] = useState();
   const [listaProcedimentos, setListaProcedimentos] = useState([]);
   const [open, setOpen] = useState(false);
-  const [valor, setValor] = useState('');
-  const [descricao, setDescricao] = useState('');
-  const [id, setId] = useState('');
-  const[novo,setNovo] = useState();
-  const[textoBotao,setTextoBotao] = useState("Cadastrar");
-
-
+  const [valor, setValor] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [id, setId] = useState("");
+  const [novo, setNovo] = useState();
+  const [textoBotao, setTextoBotao] = useState("Cadastrar");
+  const [pesquisa , setPesquisa] = useState('');
 
   const navigate = useNavigate();
 
-  function handleNotify(error,mensagem){
-    if(error){
+  function handleNotify(error, mensagem) {
+    if (error) {
       toast.error(mensagem, {
         position: "top-center",
         autoClose: 3000,
@@ -54,18 +61,18 @@ function Procedimentos() {
         progress: undefined,
         theme: "dark",
       });
-    }else{
-    toast.success(mensagem, {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  }
+    } else {
+      toast.success(mensagem, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
   }
 
   async function loadProcedimentos() {
@@ -92,9 +99,9 @@ function Procedimentos() {
   }
   function handleClickOpenNovo() {
     setTextoBotao("Cadastrar Novo");
-    setId('');
-    setDescricao('');
-    setValor('');
+    setId("");
+    setDescricao("");
+    setValor("");
     setOpen(true);
     setNovo(true);
   }
@@ -102,46 +109,49 @@ function Procedimentos() {
     setOpen(false);
   };
   async function AddProcedimento() {
-    if(novo){
-    //ADICIONA PROCEDIMENTO SE A TELA ABRIR SEM DADOS
-    await addDoc(collection(db, "procedimentos"), {
-      descricao: descricao,
-      valor: valor,
-    })
-      .then(() => {
-        handleNotify(false,"Cadastrado com sucesso.");
+    if (novo) {
+      //ADICIONA PROCEDIMENTO SE A TELA ABRIR SEM DADOS
+      await addDoc(collection(db, "procedimentos"), {
+        descricao: descricao,
+        valor: valor,
       })
-      .catch((error) => {
-        handleNotify(true,"Erro ao cadastrar.");
-      });
-          
-    }else{
-        //ALTERA SE ABRIR OS DADOS DO PROCEDIMENTO
-        const docRef = doc(db, "procedimentos", id);
-        await updateDoc(docRef, {
-          descricao: descricao,
-          valor: valor,
+        .then(() => {
+          handleNotify(false, "Cadastrado com sucesso.");
         })
-          .then(() => {
-            handleNotify(false,"Alterado com sucesso.");
-          })
-          .catch((error) => {
-            handleNotify(true,"Erro ao alterar procedimento.");
-          });
+        .catch((error) => {
+          handleNotify(true, "Erro ao cadastrar.");
+        });
+    } else {
+      //ALTERA SE ABRIR OS DADOS DO PROCEDIMENTO
+      const docRef = doc(db, "procedimentos", id);
+      await updateDoc(docRef, {
+        descricao: descricao,
+        valor: valor,
+      })
+        .then(() => {
+          handleNotify(false, "Alterado com sucesso.");
+        })
+        .catch((error) => {
+          handleNotify(true, "Erro ao alterar procedimento.");
+        });
     }
-      setOpen(false);
+    setOpen(false);
   }
   async function deletarProcedimento(id) {
     const docRef = doc(db, "procedimentos", id);
     await deleteDoc(docRef)
       .then(() => {
         setOpen(false);
-        handleNotify(false,"Procedimento apagado.");
+        handleNotify(false, "Procedimento apagado.");
       })
       .catch((error) => {
-        handleNotify(true,"Erro ao apagar.");
+        handleNotify(true, "Erro ao apagar.");
       });
   }
+  //Operador Condicional Ternário, para filtrar procedimentos.
+  const filteredProcedimento = !!pesquisa ? listaProcedimentos.filter(procedimento => {
+    return procedimento.descricao.toLowerCase().includes(pesquisa.toLowerCase());
+  }) : listaProcedimentos;
 
   useEffect(() => {
     if (localStorage.getItem("empresa") === null) {
@@ -156,12 +166,30 @@ function Procedimentos() {
 
   return (
     <>
-    
       <HeaderApp nome={empresaNome}></HeaderApp>
       <ToastContainer />
       <Container fluid="md" className="justify-content-md-center container">
+        <div className="d-grid gap-2">
+          <Button
+            variant="contained"
+            sx={{ mt: 2 }}
+            onClick={handleClickOpenNovo}
+          >
+            Novo Procedimento
+          </Button>
+        </div>
+        <br></br>
+        <Box sx={{ width: 1500, maxWidth: "100%" }}>
+              <TextField
+                fullWidth
+                label="Pesquisar procedimento"
+                value={pesquisa}
+                id="celular"
+                onChange={(e) => {setPesquisa(e.target.value)}}
+              />
+            </Box>
         <Paper elevation={0} className="paperModificado">
-          <TableContainer component={Paper} sx ={{maxHeight:"80vh"}}>
+          <TableContainer component={Paper} sx={{ maxHeight: "80vh" }}>
             <Table size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>
@@ -171,7 +199,7 @@ function Procedimentos() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {listaProcedimentos.map((doc) => {
+                {filteredProcedimento.map((doc) => {
                   return (
                     <TableRow
                       key={doc.id}
@@ -194,17 +222,8 @@ function Procedimentos() {
               </TableBody>
             </Table>
           </TableContainer>
-          
         </Paper>
-        <div className="d-grid gap-2">
-              <Button
-                variant="contained"
-                sx={{ mb: 1 }}
-                onClick={handleClickOpenNovo}
-              >
-                Novo Procedimento
-              </Button>
-            </div>
+
         <>
           <Dialog fullScreen open={open} onClose={handleClickClose}>
             <AppBar sx={{ position: "relative" }}>
@@ -224,7 +243,12 @@ function Procedimentos() {
                 >
                   Procedimento
                 </Typography>
-                <IconButton aria-label="delete" onClick={() => {deletarProcedimento(id)}}>
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => {
+                    deletarProcedimento(id);
+                  }}
+                >
                   <DeleteIcon />
                 </IconButton>
               </Toolbar>
@@ -260,7 +284,9 @@ function Procedimentos() {
               variant="contained"
               color="success"
               sx={{ mt: 1, mb: 3, ml: 1, mr: 1 }}
-              onClick={() => {AddProcedimento()}}
+              onClick={() => {
+                AddProcedimento();
+              }}
             >
               {textoBotao}
             </Button>
