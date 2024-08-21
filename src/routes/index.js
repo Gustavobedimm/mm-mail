@@ -5,6 +5,8 @@ import Login from '../pages/login';
 import Enviados from '../pages/enviados'
 import Menu from '../pages/menu'
 import Perfil from '../pages/perfil'
+import Procedimentos from "../pages/procedimentos";
+import Pacientes from "../pages/pacientes";
 function RoutesApp() {
   return (
     <Routes>
@@ -14,6 +16,8 @@ function RoutesApp() {
       <Route path="/menu" element={<Menu />} />
       <Route path="/enviados" element={<Enviados />} />
       <Route path="/perfil" element={<Perfil />} />
+      <Route path="/procedimentos" element={<Procedimentos/>}/>
+      <Route path="/pacientes" element={<Pacientes/>}/>
     </Routes>
   );
 }

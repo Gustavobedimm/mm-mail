@@ -83,6 +83,11 @@ function Home() {
 
   const navigate = useNavigate();
 
+  function handleUpdateInput(newValue){
+    setValor(newValue.valor)
+    setValue(newValue);
+  }
+
   function handleNotify(error,mensagem){
     if(error){
       toast.error(mensagem, {
@@ -363,7 +368,7 @@ function handleDelete(index_aux){
               disablePortal
               value={value}
               onChange={(event, newValue) => {
-                setValue(newValue);
+                handleUpdateInput(newValue);
               }}
               inputValue={inputValue}
               onInputChange={(event, newInputValue) => {
