@@ -40,7 +40,7 @@ export function ListOdonto(props) {
           <ListItemText primary="Procedimentos" />
         </ListItemButton>
         <Divider />
-        <ListItemButton
+        {/*<ListItemButton
           onClick={() => {
             goPacientes();
           }}
@@ -49,7 +49,7 @@ export function ListOdonto(props) {
             <GroupIcon />
           </ListItemIcon>
           <ListItemText primary="Pacientes" />
-        </ListItemButton>
+        </ListItemButton>*/}
         <Divider />
       </List>
     </>

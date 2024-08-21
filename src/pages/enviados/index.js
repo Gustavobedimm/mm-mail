@@ -72,6 +72,7 @@ function Home() {
   const [empresaImagem, setEmpresaImagem] = useState();
   const [empresaResponsavel, setEmpresaResponsavel] = useState();
   const [empresaSite, setEmpresaSite] = useState();
+  const [empresaTipo, setEmpresaTipo] = useState();
 
   const [id, setId] = useState("");
   const [nome, setNome] = useState("");
@@ -134,18 +135,18 @@ function Home() {
     var fileURL = URL.createObjectURL(file);
     window.open(fileURL);
   }
-  async function loadEnviados(codigo) {
-    const q = query(
-      collection(db, "emailmm"),
-      where("empresaCodigo", "==", codigo)
-    );
-    const querySnapshot = await getDocs(q);
-    //onSnapshot é para dados em tempo real
+  async function loadEnviados(codigo,tipo) {
+    if(tipo === 1){
+      const q = query(
+        collection(db, "emailmm"),
+        where("empresaCodigo", "==", codigo)
+      );
+      const querySnapshot = await getDocs(q);
+      //onSnapshot é para dados em tempo real
     //const unsub = onSnapshot(collection(db, "emailmm"), (snapshot2) => {
     let lista2 = [];
     //snapshot2.forEach((doc) => {
     querySnapshot.forEach((doc) => {
-      console.log(doc.data());
       lista2.push({
         id: doc.id,
         nome: doc.data().nome,
@@ -173,47 +174,42 @@ function Home() {
     lista2.sort(function (a, b) {
       return a.dataEnvioConversao < b.dataEnvioConversao;
     });
-
     setListaEnviados(lista2);
-    //});
+    }else if(tipo === 2){
+      const q = query(collection(db, "emailod"));
+      const querySnapshot = await getDocs(q);
+      let lista2 = [];
+      querySnapshot.forEach((doc) => {
+        lista2.push({
+          id: doc.id,
+          nome: doc.data().nome,
+          valorTotal: doc.data().valorTotal,
+          email: doc.data().email,
+          enviaEmail: doc.data().enviaEmail,
+          celular: doc.data().celular,
+          documento : doc.data().documento,
+          base64PDF: doc.data().base64PDF,
+        });
+      }
+    );
+    setListaEnviados(lista2);
+    }
   }
   async function deletarOrcamento(id) {
-    
-    const docRef = doc(db, "emailmm", id);
-    await deleteDoc(docRef)
-      .then(() => {
-        toast.success("Orçamento excluido.", {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-        handleClickClose();
-
-      })
-      .catch((error) => {
-        toast.error(error, {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-      });
-
+    if(empresaTipo === 1){
+      const docRef = doc(db, "emailmm", id);
+      await deleteDoc(docRef);
+          handleClickClose();
+    }
+    else if (empresaTipo === 2){
+      const docRef = doc(db, "emailod", id);
+      await deleteDoc(docRef);
+          handleClickClose();
+    }
       let lista2 = [];
       lista2 = listaEnviados;
       lista2.map((email,index) => {
         if(email.id === id){
-          console.log("o ID é igual email.id" + email.id + "id do parametro " + id  )
-          console.log(email);
           lista2.splice(index, 1);
         }
       })
@@ -239,7 +235,8 @@ function Home() {
       setEmpresaImagem(emp.imagem);
       setEmpresaResponsavel(emp.responsavel);
       setEmpresaSite(emp.site);
-      loadEnviados(emp.codigo);
+      setEmpresaTipo(emp.tipo);
+      loadEnviados(emp.codigo,emp.tipo);
     }
   }, []);
 

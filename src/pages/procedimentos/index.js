@@ -86,6 +86,7 @@ function Procedimentos() {
         valor: doc.data().valor,
       });
     });
+    
     setListaProcedimentos(lista2);
   }
 
@@ -189,7 +190,7 @@ function Procedimentos() {
               />
             </Box>
         <Paper elevation={0} className="paperModificado">
-          <TableContainer component={Paper} sx={{ maxHeight: "80vh" }}>
+          <TableContainer component={Paper}>
             <Table size="small" aria-label="a dense table">
               <TableHead>
                 <TableRow>

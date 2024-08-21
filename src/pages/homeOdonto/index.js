@@ -3,7 +3,7 @@ import "./index.css";
 import Api from "../../Api";
 import HeaderApp from "../../components/headerApp";
 import { db } from "../../firebaseConection";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 //bootstrao
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -37,7 +37,7 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
-import CancelIcon from '@mui/icons-material/Cancel';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 //import { Buffer } from 'buffer';
 
 function Home() {
@@ -47,7 +47,7 @@ function Home() {
   const [email, setEmail] = useState("");
   const [valor, setValor] = useState("");
   const [dente, setDente] = useState("");
-  const [valorTotal, setValorTotal] = useState("");
+  const [valorTotal, setValorTotal] = useState("0,00");
   const [obs, setObs] = useState("");
   const [preVisualiza, setPreVisualiza] = useState(false);
   const [enviaEmail, setEnviaEmail] = useState(true);
@@ -175,6 +175,27 @@ function handleDelete(index_aux){
   setListaProcedimentosTmp(listaTmp);
 }
 
+async function AddEmail(base64PDF) {
+  //CADASTRAR NOVO
+
+  await addDoc(collection(db, "emailod"), {
+    nome: nome,
+    documento: documento,
+    email: email,
+    celular: telefone,
+    valorTotal: valorTotal,
+    enviaEmail: enviaEmail,
+    base64PDF: base64PDF,
+    
+  })
+    .then(() => {
+      console.log("gravado no banco");
+    })
+    .catch((error) => {
+      console.log("erro ao gravar em banco" + error);
+    });
+}
+
 
   async function getProcedimentos() {
     const postsRef = collection(db, "procedimentos");
@@ -251,7 +272,7 @@ function handleDelete(index_aux){
       });
       //window.open(fileURL);
     }
-    //AddEmail(base64PDF);
+    AddEmail(base64PDF);
   }
 
   //--banco de dados
@@ -299,7 +320,7 @@ function handleDelete(index_aux){
       })
       .catch((error) => {
           console.log(error);
-          handleNotify(false,"Erro ao gerar o orcamento.")       
+          handleNotify(true,"Erro ao gerar o orcamento.")       
       });
     setTextoBotao("Enviar");
     setLoading(false);
@@ -533,7 +554,7 @@ function handleDelete(index_aux){
         onChange={(event, newValue) => {
           handleNavigation(newValue);
         }}
-      >   <BottomNavigationAction label="Cancelar" icon={<CancelIcon />}/>
+      >   <BottomNavigationAction label={valorTotal} icon={<MonetizationOnIcon />}/>
          <BottomNavigationAction label="Proximo" icon={<ArrowCircleRightIcon />}/>
          <BottomNavigationAction label="Enviar" icon={<MarkEmailReadIcon />}/>
         
