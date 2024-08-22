@@ -62,37 +62,34 @@ function Home() {
   const [empresaResponsavel, setEmpresaResponsavel] = useState();
   const [empresaSite, setEmpresaSite] = useState();
 
-
   const navigate = useNavigate();
- 
+
   const formatCurrency = (value, currency, localeString) => {
     const options = { style: "currency", currency };
     setValor(value.toLocaleString(localeString, options));
   };
 
-  
   useEffect(() => {
     if (localStorage.getItem("empresa") === null) {
       navigate("/");
-    }else{
-    var empresaJson = localStorage.getItem('empresa');
-    const emp = JSON.parse(empresaJson);
-    setEmpresaNome(emp.nome);
-    setEmpresaCelular(emp.celular);
-    setEmpresaTelefone(emp.telefone);
-    setEmpresaCnpj(emp.cnpj);
-    setEmpresaEmail(emp.email);
-    setEmpresaEndereco(emp.endereco);
-    setEmpresaEstado(emp.estado);
-    setEmpresaCidade(emp.cidade);
-    setEmpresaMensagem(emp.mensagem);
-    setEmpresaCodigo(emp.codigo);
-    setEmpresaImagem(emp.imagem);
-    setEmpresaResponsavel(emp.responsavel);
-    setEmpresaSite(emp.site);
-  }
+    } else {
+      var empresaJson = localStorage.getItem("empresa");
+      const emp = JSON.parse(empresaJson);
+      setEmpresaNome(emp.nome);
+      setEmpresaCelular(emp.celular);
+      setEmpresaTelefone(emp.telefone);
+      setEmpresaCnpj(emp.cnpj);
+      setEmpresaEmail(emp.email);
+      setEmpresaEndereco(emp.endereco);
+      setEmpresaEstado(emp.estado);
+      setEmpresaCidade(emp.cidade);
+      setEmpresaMensagem(emp.mensagem);
+      setEmpresaCodigo(emp.codigo);
+      setEmpresaImagem(emp.imagem);
+      setEmpresaResponsavel(emp.responsavel);
+      setEmpresaSite(emp.site);
+    }
   }, []);
-
 
   //PDF
   function ativaVisualizacao() {
@@ -132,12 +129,12 @@ function Home() {
     const date = new Date();
     const dia = date.getDate().toString().padStart(2, "0");
     let mes = date.getMonth() + 1;
-    mes = mes.toString().padStart(2,"0");
+    mes = mes.toString().padStart(2, "0");
     const ano = date.getFullYear();
     const h = date.getHours();
     const m = date.getMinutes();
     const StringdataAtual = dia + "/" + mes + "/" + ano + " " + h + ":" + m;
-    const dataConversao = ano+"-"+mes+"-"+dia;
+    const dataConversao = ano + "-" + mes + "-" + dia;
 
     //CADASTRAR NOVO
     await addDoc(collection(db, "emailmm"), {
@@ -161,8 +158,7 @@ function Home() {
       base64PDF: base64PDF,
       dataEnvio: StringdataAtual,
       dataEnvioConversao: dataConversao,
-      empresaCodigo:empresaCodigo
-      
+      empresaCodigo: empresaCodigo,
     })
       .then(() => {
         console.log("gravado no banco");
@@ -254,21 +250,19 @@ function Home() {
     //setValor("");
     //setObs("");
   }
- // function toDataUrl(url, callback) {
- //   var xhr = new XMLHttpRequest();
- //   xhr.onload = function() {
- //       var reader = new FileReader();
- //       reader.onloadend = function() {
- //           callback(reader.result);
- //       }
- //       reader.readAsDataURL(xhr.response);
- //   };
- //   xhr.open('GET', url);
- //   xhr.responseType = 'blob';
- //   xhr.send();
- // }
- 
-  
+  // function toDataUrl(url, callback) {
+  //   var xhr = new XMLHttpRequest();
+  //   xhr.onload = function() {
+  //       var reader = new FileReader();
+  //       reader.onloadend = function() {
+  //           callback(reader.result);
+  //       }
+  //       reader.readAsDataURL(xhr.response);
+  //   };
+  //   xhr.open('GET', url);
+  //   xhr.responseType = 'blob';
+  //   xhr.send();
+  // }
 
   async function EnviarEmail() {
     if (email.length < 1) {
@@ -336,14 +330,14 @@ function Home() {
       });
       return;
     }
-    
+
     //toDataUrl(empresaImagem, function(myBase64Par) {
     //const buf = Buffer.from(myBase64Par, 'base64');
     //setMyBase64(buf);
     //console.log(myBase64Par);
     //console.log(buf);
-    
-  //});
+
+    //});
 
     setLoading(true);
     setTextoBotao("Enviando E-mail");
@@ -366,19 +360,19 @@ function Home() {
       cb7: checked7,
       cb8: checked8,
       cb9: checked9,
-      empresaNome:empresaNome,
-      empresaCelular:empresaCelular,
-      empresaTelefone:empresaTelefone,
-      empresaCnpj:empresaCnpj,
-      empresaEmail:empresaEmail,
-      empresaEndereco:empresaEndereco,
-      empresaEstado:empresaEstado, 
-      empresaCidade:empresaCidade, 
-      empresaMensagem:empresaMensagem,
-      empresaCodigo:empresaCodigo, 
-      empresaImagem:empresaImagem,
-      empresaResponsavel:empresaResponsavel,
-      empresaSite:empresaSite
+      empresaNome: empresaNome,
+      empresaCelular: empresaCelular,
+      empresaTelefone: empresaTelefone,
+      empresaCnpj: empresaCnpj,
+      empresaEmail: empresaEmail,
+      empresaEndereco: empresaEndereco,
+      empresaEstado: empresaEstado,
+      empresaCidade: empresaCidade,
+      empresaMensagem: empresaMensagem,
+      empresaCodigo: empresaCodigo,
+      empresaImagem: empresaImagem,
+      empresaResponsavel: empresaResponsavel,
+      empresaSite: empresaSite,
       //imagemBase64:myBase64
     };
 
@@ -456,6 +450,7 @@ function Home() {
                 control={
                   <Checkbox
                     id="checkbox1"
+                    color="default"
                     checked={checked1}
                     onClick={() => {
                       mudaChe1();
@@ -467,6 +462,7 @@ function Home() {
               <FormControlLabel
                 control={
                   <Checkbox
+                    color="default"
                     id="checkbox2"
                     checked={checked2}
                     onClick={() => {
@@ -479,6 +475,7 @@ function Home() {
               <FormControlLabel
                 control={
                   <Checkbox
+                    color="default"
                     id="checkbox3"
                     checked={checked3}
                     onClick={() => {
@@ -491,6 +488,7 @@ function Home() {
               <FormControlLabel
                 control={
                   <Checkbox
+                    color="default"
                     id="checkbox4"
                     checked={checked4}
                     onClick={() => {
@@ -503,6 +501,7 @@ function Home() {
               <FormControlLabel
                 control={
                   <Checkbox
+                    color="default"
                     id="checkbox5"
                     checked={checked5}
                     onClick={() => {
@@ -515,6 +514,7 @@ function Home() {
               <FormControlLabel
                 control={
                   <Checkbox
+                    color="default"
                     id="checkbox6"
                     checked={checked6}
                     onClick={() => {
@@ -527,6 +527,7 @@ function Home() {
               <FormControlLabel
                 control={
                   <Checkbox
+                    color="default"
                     id="checkbox7"
                     checked={checked7}
                     onClick={() => {
@@ -539,6 +540,7 @@ function Home() {
               <FormControlLabel
                 control={
                   <Checkbox
+                    color="default"
                     id="checkbox8"
                     checked={checked8}
                     onClick={() => {
@@ -551,6 +553,7 @@ function Home() {
               <FormControlLabel
                 control={
                   <Checkbox
+                    color="default"
                     id="checkbox9"
                     checked={checked9}
                     onClick={() => {
@@ -615,12 +618,12 @@ function Home() {
               <FormControlLabel
                 control={
                   <Switch
+                    color="default"
                     checked={enviaEmail}
                     onChange={() => {
                       desativaEmail();
                     }}
                     name="jason"
-                    color="primary"
                   />
                 }
                 label="Envia E-Mail"
@@ -628,17 +631,26 @@ function Home() {
               <FormControlLabel
                 control={
                   <Switch
+                    color="default"
                     checked={preVisualiza}
                     onChange={() => {
                       ativaVisualizacao();
                     }}
                     name="jason"
-                    color="primary"
                   />
                 }
                 label="Visualiza PDF"
               />
-              <Button variant="contained" onClick={EnviarEmail} sx={{mt: 1,mb: 3 }}>
+              <Button
+                variant="contained"
+                onClick={EnviarEmail}
+                sx={{
+                  mt: 1,
+                  mb: 3,
+                  background: "#212121",
+                  "&:hover": { backgroundColor: "#424242" },
+                }}
+              >
                 {loading && (
                   <Spinner
                     as="span"

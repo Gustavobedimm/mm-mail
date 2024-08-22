@@ -173,7 +173,7 @@ function Procedimentos() {
         <div className="d-grid gap-2">
           <Button
             variant="contained"
-            sx={{ mt: 2 }}
+            sx={{ mt: 2 , background : "#212121", '&:hover': {backgroundColor: '#424242'}}}
             onClick={handleClickOpenNovo}
           >
             Novo Procedimento
@@ -227,7 +227,7 @@ function Procedimentos() {
 
         <>
           <Dialog fullScreen open={open} onClose={handleClickClose}>
-            <AppBar sx={{ position: "relative" }}>
+            <AppBar sx={{ position: "relative" ,background : "#212121"}}>
               <Toolbar>
                 <IconButton
                   edge="start"
@@ -245,6 +245,7 @@ function Procedimentos() {
                   Procedimento
                 </Typography>
                 <IconButton
+                color="inherit"
                   aria-label="delete"
                   onClick={() => {
                     deletarProcedimento(id);
@@ -283,8 +284,7 @@ function Procedimentos() {
 
             <Button
               variant="contained"
-              color="success"
-              sx={{ mt: 1, mb: 3, ml: 1, mr: 1 }}
+              sx={{ mt: 1, mb: 3, ml: 1, mr: 1,background : "#212121", '&:hover': {backgroundColor: '#424242'}}}
               onClick={() => {
                 AddProcedimento();
               }}

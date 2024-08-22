@@ -283,7 +283,7 @@ function Home() {
             
           </Form>
           <div className="d-grid gap-2">
-          <Button variant="contained"  sx={{mt: 1,mb: 3 }} onClick={alterarEmpresa}>Salvar Alterações</Button>
+          <Button variant="contained"  sx={{mt: 1,mb: 3 ,background : "#212121", '&:hover': {backgroundColor: '#424242',}}} onClick={alterarEmpresa}>Salvar Alterações</Button>
           </div>
         </Paper>
       </Container>

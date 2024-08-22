@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Typography from "@mui/material/Typography";
 import { createTheme } from "@mui/material/styles";
 import { useState } from "react";
-import "./index.css";
+import "./../login/index.css";
 //bootstrao
 
 import Button from "@mui/material/Button";
@@ -145,6 +145,7 @@ export default function SignIn() {
             onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
+            
           >
             <TextField
               margin="normal"
@@ -167,7 +168,7 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2  ,background : "#212121", '&:hover': {backgroundColor: '#424242'}}}
               onClick={buscarEmpresa}
               
             >

@@ -284,7 +284,7 @@ function Home() {
 
         <>
           <Dialog fullScreen open={open} onClose={handleClickClose}>
-            <AppBar sx={{ position: "relative" }}>
+            <AppBar sx={{ position: "relative" , background : "#212121"}}>
               <Toolbar>
                 <IconButton
                   edge="start"
@@ -303,6 +303,7 @@ function Home() {
                 </Typography>
                 <IconButton
                   aria-label="delete"
+                  color="inherit"
                   onClick={() => {
                     deletarOrcamento(id);
                   }}
@@ -339,8 +340,7 @@ function Home() {
 
             <Button
               variant="contained"
-              color="error"
-              sx={{ mt: 1, mb: 3, ml: 1, mr: 1 }}
+              sx={{ mt: 1, mb: 3, ml: 1, mr: 1 , background : "#212121", '&:hover': {backgroundColor: '#424242',}}}
               onClick={() => {
                 montaPDF(base64);
               }}

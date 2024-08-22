@@ -77,6 +77,7 @@ function Home() {
 
   const [valueTab, setValueTab] = useState('1');
 
+
   const handleChange = (event, newValue) => {
     setValueTab(newValue);
   };
@@ -335,7 +336,14 @@ async function AddEmail(base64PDF) {
         
       <TabContext value={valueTab}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <TabList onChange={handleChange} aria-label="lab API tabs example" TabIndicatorProps={{
+    style: {
+      backgroundColor: "#000",
+      color: "#000"
+    }
+  }}
+  textColor="error"
+ indicatorColor="error">
             <Tab label="Paciente" value="1" />
             <Tab label="Procedimentos" value="2" />
             <Tab label="Total" value="3" />
@@ -425,7 +433,7 @@ async function AddEmail(base64PDF) {
               />
             </Box>
             <div className="d-grid gap-2">
-              <Button variant="contained" sx={{ mt: 2, mb: 3 }} onClick={() => {handleAdd()}}>
+              <Button variant="contained" sx={{ mt: 2, mb: 3 ,background : "#212121", '&:hover': {backgroundColor: '#424242',}}} onClick={() => {handleAdd()}}>
                 Adicionar
               </Button>
             </div>
@@ -442,11 +450,11 @@ async function AddEmail(base64PDF) {
                 </TableHead>
                 <TableBody>
                   {listaProcedimentosTmp.map((row,index) => (
-                    <TableRow key={index}sx={{ "&:last-child td, &:last-child th": { border: 0 } }} style ={ index % 2? { background : "#f8f9fa" }:{ background : "#e9ecef" }}>
+                    <TableRow key={index}sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                       <TableCell component="th" scope="row">{row.label}</TableCell>
                       <TableCell align="right">{row.dente}</TableCell>
                       <TableCell align="right">{row.valor}</TableCell>
-                      <TableCell align="right"><DeleteIcon color="error" onClick={() => {handleDelete(index)}}></DeleteIcon></TableCell>
+                      <TableCell align="right"><DeleteIcon  onClick={() => {handleDelete(index)}}></DeleteIcon></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -485,7 +493,7 @@ async function AddEmail(base64PDF) {
                       desativaEmail();
                     }}
                     name="jason"
-                    color="primary"
+                    color="default"
                   />
                 }
                 label="Envia E-Mail"
@@ -498,7 +506,7 @@ async function AddEmail(base64PDF) {
                       ativaVisualizacao();
                     }}
                     name="jason"
-                    color="primary"
+                    color="default"
                   />
                 }
                 label="Visualiza PDF"
@@ -508,7 +516,7 @@ async function AddEmail(base64PDF) {
               <Button
                 variant="contained"
                 onClick={EnviarEmail}
-                sx={{ mt: 1, mb: 3 }}
+                sx={{ mt: 1, mb: 3 , background : "#212121", '&:hover': {backgroundColor: '#424242',}}}
               >
                 {loading && (
                   <Spinner
@@ -554,6 +562,15 @@ async function AddEmail(base64PDF) {
         onChange={(event, newValue) => {
           handleNavigation(newValue);
         }}
+        sx={{
+          "& .MuiBottomNavigationAction-root, .Mui-selected, svg": {
+            color: "#212121",
+            "& .Mui-selected, .Mui-selected > svg": {
+      color: "#212121"
+    }
+          }
+       }}
+        
       >   <BottomNavigationAction label={valorTotal} icon={<MonetizationOnIcon />}/>
          <BottomNavigationAction label="Proximo" icon={<ArrowCircleRightIcon />}/>
          <BottomNavigationAction label="Enviar" icon={<MarkEmailReadIcon />}/>
